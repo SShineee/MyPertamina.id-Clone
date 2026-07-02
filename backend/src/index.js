@@ -5,8 +5,6 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const priceRoutes = require('./routes/priceRoutes');
 const brightGasPriceRoutes = require('./routes/brightGasPriceRoutes');
-const fuelPriceMatrixRoutes = require('./routes/fuelPriceMatrixRoutes');
-const benefitContentRoutes = require('./routes/benefitContentRoutes');
 const contentRoutes = require('./routes/contentRoutes');
 const userRoutes = require('./routes/userRoutes');
 const roleRoutes = require('./routes/roleRoutes');
@@ -25,8 +23,6 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/prices', priceRoutes);
 app.use('/api/bright-gas-prices', brightGasPriceRoutes);
-app.use('/api/fuel-price-matrix', fuelPriceMatrixRoutes);
-app.use('/api/benefit-content', benefitContentRoutes);
 app.use('/api/contents', contentRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
