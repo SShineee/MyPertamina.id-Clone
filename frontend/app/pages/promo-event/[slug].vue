@@ -53,6 +53,9 @@ useHead(() => ({ title: `MyPertamina | ${promo.value.title}` }))
 
       <div v-if="promo.body_html" class="rich-text" v-html="promo.body_html" />
       <p v-else-if="promo.description">{{ promo.description }}</p>
+
+      <PromoShareButtons :title="promo.title" />
+      <PromoRelated :current-slug="promo.slug" />
     </article>
   </div>
 </template>

@@ -3,8 +3,8 @@ const contentModel = require('../models/contentModel');
 const VALID_TYPES = ['promo', 'banner', 'berita'];
 
 async function list(req, res) {
-  const { type, activeOnly, category, search } = req.query;
-  const contents = await contentModel.list({ type, activeOnly: activeOnly === 'true', category, search });
+  const { type, activeOnly, category, search, excludeSlug } = req.query;
+  const contents = await contentModel.list({ type, activeOnly: activeOnly === 'true', category, search, excludeSlug });
   res.json({ data: contents });
 }
 

@@ -1,6 +1,6 @@
 const pool = require('../config/db');
 
-async function list({ type, activeOnly, category, search } = {}) {
+async function list({ type, activeOnly, category, search, excludeSlug } = {}) {
   const conditions = [];
   const params = [];
   if (type) {
@@ -14,6 +14,10 @@ async function list({ type, activeOnly, category, search } = {}) {
   if (search) {
     conditions.push('(title LIKE ? OR description LIKE ?)');
     params.push(`%${search}%`, `%${search}%`);
+  }
+  if (excludeSlug) {
+    conditions.push('slug != ?');
+    params.push(excludeSlug);
   }
   if (activeOnly) {
     conditions.push('is_active = TRUE');
