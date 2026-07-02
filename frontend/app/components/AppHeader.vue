@@ -21,7 +21,7 @@ const navItems: NavItem[] = [
     submenu: {
       title: 'Tentang MyPertamina',
       items: [
-        { label: 'Informasi Harga BBM', to: '/tentang-mypertamina/informasi-harga-bbm' },
+        { label: 'Informasi Harga BBM', to: '/about/product-price' },
         { label: 'Informasi Harga Bright Gas', to: '/about/bright-gas-price' },
         { label: 'Keuntungan MyPertamina', to: '/tentang-mypertamina/keuntungan-mypertamina' },
         { label: 'MyPertamina Channel', to: '/tentang-mypertamina/mypertamina-channel' },
