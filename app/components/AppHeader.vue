@@ -73,9 +73,8 @@ const navItems: NavItem[] = [
     submenu: {
       title: 'Sustainability',
       items: [
-        { label: 'Environmental (Lingkungan)', to: '/sustainability/environmental' },
-        { label: 'Social (Sosial)', to: '/sustainability/social' },
-        { label: 'Governance (Tata Kelola)', to: '/sustainability/governance' },
+        { label: 'SPBU Green Energy Station', to: '/sustainability/green-energy-station' },
+        { label: 'Kumpulkan Minyak Jelantah', to: '/sustainability/kumpulkan-minyak-jelantah' },
         { label: 'Laporan Keberlanjutan', to: '/sustainability/laporan' },
       ],
     },

@@ -6,8 +6,14 @@ const props = withDefaults(
   {},
 )
 
+const emit = defineEmits<{
+  'update:activeIndex': [index: number]
+}>()
+
 const track = ref<HTMLElement | null>(null)
 const activeIndex = ref(0)
+
+watch(activeIndex, (value) => emit('update:activeIndex', value))
 
 function scrollToIndex(index: number) {
   const el = track.value
