@@ -5,6 +5,7 @@ const { requireAuth, requirePermission } = require('../middlewares/auth');
 const router = Router();
 
 router.get('/', contentController.list);
+router.get('/slug/:slug', contentController.detail);
 router.post('/', requireAuth, requirePermission('content.manage'), contentController.create);
 router.put('/:id', requireAuth, requirePermission('content.manage'), contentController.update);
 router.delete('/:id', requireAuth, requirePermission('content.manage'), contentController.remove);
