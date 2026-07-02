@@ -68,6 +68,37 @@ async function seed() {
       );
     }
 
+    const brightGasPrices = [
+      ['Aceh', 111000, 230000],
+      ['Sumatera Utara', 111000, 230000],
+      ['Sumatera Barat', 111000, 230000],
+      ['Riau', 111000, 230000],
+      ['Kepulauan Riau', 116000, 238000],
+      ['Jambi', 112000, 231000],
+      ['Sumatera Selatan', 112000, 231000],
+      ['Bengkulu', 114000, 235000],
+      ['Lampung', 113000, 232000],
+      ['Kepulauan Bangka Belitung', null, null],
+      ['DKI Jakarta', 102000, 210000],
+      ['Jawa Barat', 103000, 212000],
+      ['Jawa Tengah', 104000, 213000],
+      ['DI Yogyakarta', 105000, 214000],
+      ['Jawa Timur', 104000, 213000],
+      ['Banten', 103000, 212000],
+      ['Bali', 118000, 240000],
+      ['Nusa Tenggara Barat', 120000, 245000],
+      ['Kalimantan Barat', 119000, 242000],
+      ['Kalimantan Timur', 116000, 238000],
+      ['Sulawesi Selatan', 118000, 240000],
+      ['Papua', null, null],
+    ];
+    for (const [province, price55, price12] of brightGasPrices) {
+      await conn.query(
+        'INSERT INTO bright_gas_prices (province, price_5_5kg, price_12kg) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE province = province',
+        [province, price55, price12]
+      );
+    }
+
     await conn.commit();
     console.log('Seed selesai. Login CMS: admin@mypertamina.local / Admin123!');
   } catch (err) {

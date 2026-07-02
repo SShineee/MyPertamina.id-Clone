@@ -45,6 +45,16 @@ CREATE TABLE IF NOT EXISTS fuel_prices (
   FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL
 );
 
+CREATE TABLE IF NOT EXISTS bright_gas_prices (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  province VARCHAR(100) NOT NULL UNIQUE,
+  price_5_5kg DECIMAL(10, 2) DEFAULT NULL, -- NULL = tidak tersedia SPBE di wilayah tersebut
+  price_12kg DECIMAL(10, 2) DEFAULT NULL,
+  updated_by INT DEFAULT NULL,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL
+);
+
 CREATE TABLE IF NOT EXISTS contents (
   id INT AUTO_INCREMENT PRIMARY KEY,
   type ENUM('promo', 'banner', 'berita') NOT NULL,
