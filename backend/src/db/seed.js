@@ -638,6 +638,35 @@ async function seed() {
       const [[existing]] = await conn.query('SELECT id FROM ucollect_locations WHERE name = ?', [name]);
       if (!existing) {
         await conn.query('INSERT INTO ucollect_locations (name, address, region) VALUES (?, ?, ?)', [name, address, region]);
+    const faqs = [
+      [
+        'Bagaimana jika nomor handphone akun MyPertamina dan E-Wallet saya berbeda (LinkAja, OVO, GoPay)?',
+        'Pastikan nomor handphone yang terdaftar di akun MyPertamina sama dengan nomor yang terdaftar di aplikasi E-Wallet Anda. Jika berbeda, silakan perbarui salah satu nomor melalui menu Profil agar proses pembayaran dan penukaran poin berjalan lancar.',
+      ],
+      [
+        'Bagaimana cara mendapatkan poin?',
+        'Poin MyPertamina otomatis didapatkan setiap kali Anda melakukan transaksi pembelian BBM atau produk non-BBM menggunakan metode pembayaran yang terhubung dengan aplikasi MyPertamina di SPBU rekanan.',
+      ],
+      [
+        'Kapan saya menerima poin setelah berhasil melakukan transaksi?',
+        'Poin umumnya masuk ke akun Anda secara otomatis dalam waktu 1x24 jam setelah transaksi berhasil. Jika lebih dari 24 jam poin belum masuk, silakan hubungi Pertamina Contact Center 135.',
+      ],
+      [
+        'Bagaimana jika tidak bisa melakukan scan QR code melalui aplikasi MyPertamina di SPBU?',
+        'Pastikan kamera perangkat Anda bersih dan aplikasi MyPertamina sudah diperbarui ke versi terbaru. Jika masalah masih terjadi, Anda dapat meminta petugas SPBU untuk memasukkan kode transaksi secara manual.',
+      ],
+      [
+        'Produk apa saja yang bisa ditukarkan dengan Poin MyPertamina?',
+        'Poin MyPertamina dapat ditukarkan dengan berbagai produk seperti voucher belanja, merchandise eksklusif, saldo e-wallet, hingga produk Bright Store dan Bright Cafe yang tersedia di halaman penukaran poin aplikasi.',
+      ],
+    ];
+    for (let i = 0; i < faqs.length; i++) {
+      const [question, answer] = faqs[i];
+      const [[existingFaq]] = await conn.query('SELECT id FROM faqs WHERE question = ?', [question]);
+      if (existingFaq) {
+        await conn.query('UPDATE faqs SET answer = ?, sort_order = ? WHERE id = ?', [answer, i, existingFaq.id]);
+      } else {
+        await conn.query('INSERT INTO faqs (question, answer, sort_order) VALUES (?, ?, ?)', [question, answer, i]);
       }
     }
 
