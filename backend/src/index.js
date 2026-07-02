@@ -7,6 +7,7 @@ const priceRoutes = require('./routes/priceRoutes');
 const brightGasPriceRoutes = require('./routes/brightGasPriceRoutes');
 const productRoutes = require('./routes/productRoutes');
 const contentRoutes = require('./routes/contentRoutes');
+const sustainabilityRoutes = require('./routes/sustainabilityRoutes');
 const userRoutes = require('./routes/userRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const { notFoundHandler, errorHandler } = require('./middlewares/errorHandler');
@@ -26,6 +27,7 @@ app.use('/api/prices', priceRoutes);
 app.use('/api/bright-gas-prices', brightGasPriceRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/contents', contentRoutes);
+app.use('/api/sustainability', sustainabilityRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
 

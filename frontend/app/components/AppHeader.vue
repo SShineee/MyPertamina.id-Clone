@@ -36,12 +36,12 @@ const navItems: NavItem[] = [
       items: [
         { label: 'Informasi Harga BBM', to: '/about/product-price' },
         { label: 'Informasi Harga Bright Gas', to: '/about/bright-gas-price' },
-        { label: 'Keuntungan MyPertamina', to: '/tentang-mypertamina/keuntungan-mypertamina' },
+        { label: 'Keuntungan MyPertamina', to: '/about/keuntungan-mypertamina' },
         { label: 'MyPertamina Channel', to: '/about/mypertamina-channel' },
       ],
     },
   },
-  { key: 'program-promo', label: 'Program & Promo', to: '/program-promo' },
+  { key: 'program-promo', label: 'Program & Promo', to: '/promo-event' },
   {
     key: 'produk',
     label: 'Produk',
@@ -103,9 +103,8 @@ const navItems: NavItem[] = [
     submenu: {
       title: 'Sustainability',
       items: [
-        { label: 'Environmental (Lingkungan)', to: '/sustainability/environmental' },
-        { label: 'Social (Sosial)', to: '/sustainability/social' },
-        { label: 'Governance (Tata Kelola)', to: '/sustainability/governance' },
+        { label: 'SPBU Green Energy Station', to: '/sustainability/green-energy-station' },
+        { label: 'Kumpulkan Minyak Jelantah', to: '/sustainability/kumpulkan-minyak-jelantah' },
         { label: 'Laporan Keberlanjutan', to: '/sustainability/laporan' },
       ],
     },

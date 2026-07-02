@@ -310,6 +310,133 @@ const PRODUCTS = [
   },
 ];
 
+const PROMOS = [
+  {
+    slug: 'promocashback-gopaycoins',
+    category: 'Program Promo',
+    title: 'Beli Pertamax Series atau Pertamina Dex Pakai MyPertamina GoPay, Dapatkan Cashback 10.000 GoPay Coins & E-Voucher MyPertamina!',
+    description:
+      'Khusus pengguna MyPertamina GoPay, dapatkan cashback 10.000 GoPay Coins dan kesempatan E-Voucher MyPertamina Rp100.000,-.',
+    imageUrl: '/images/promo/promocashback-gopaycoins.jpg',
+    bodyHtml: `
+      <h2>Beragam Keistimewaan Hadir Khusus Untuk Kamu Pengguna Setia MyPertamina GoPay, Nikmati Keuntungan Lebih di Setiap Transaksi!</h2>
+      <p>Khusus untuk kamu yang pertama kali menggunakan metode pembayaran MyPertamina GoPay untuk transaksi Pertamax Series atau Pertamina Dex dengan minimum transaksi Rp200.000,-, kamu bisa mendapatkan <em>cashback</em> 10.000 GoPay <em>Coins</em>! Tidak hanya itu, 100 konsumen MyPertamina GoPay dengan transaksi tertinggi tiap bulannya berkesempatan mendapatkan E-Voucher MyPertamina Rp100.000,-!</p>
+      <p>Jangan sampai terlewat ya, Sob! Periode promo berlaku hingga 31 Agustus 2026. Segera ke SPBU Pertamina dan tingkatkan terus transaksi kamu menggunakan MyPertamina GoPay untuk jaminan bahan bakar berkualitas, raih kesempatan dapat promo lebih besar!</p>
+      <h3>Syarat &amp; Ketentuan :</h3>
+      <ol>
+        <li>Promo berlangsung dari tanggal 1 Juli - 31 Agustus 2026 setiap hari pukul 00:00 – 23:59 WIB.</li>
+        <li>Berlaku untuk transaksi pembelian Pertamax Series dan Pertamina Dex minimal Rp200.000,- menggunakan MyPertamina GoPay.</li>
+        <li>Cashback 10.000 GoPay Coins hanya berlaku untuk transaksi pertama kali menggunakan metode pembayaran MyPertamina GoPay.</li>
+        <li>E-Voucher MyPertamina Rp100.000,- diberikan kepada 100 konsumen dengan transaksi MyPertamina GoPay tertinggi setiap bulannya.</li>
+      </ol>
+    `,
+  },
+  {
+    slug: 'ovo-cashback-points',
+    category: 'Program Promo',
+    title: 'Spesial Pengguna MyPertamina OVO, Bertabur Cashback OVO Points di MyPertamina',
+    description:
+      'Promo berlaku untuk pembelian produk Pertamax Series & Pertamina Dex pembayaran menggunakan MyPertamina OVO di aplikasi MyPertamina.',
+    imageUrl: '/images/promo/ovo-cashback-points.jpg',
+    bodyHtml: `
+      <h2>Cashback Hingga 15.000 OVO Points Khusus Pengguna MyPertamina OVO</h2>
+      <p>Nikmati cashback OVO Points untuk setiap transaksi Pertamax Series dan Pertamina Dex menggunakan MyPertamina OVO. Upgrade akun kamu menjadi OVO Nabung untuk mendapatkan cashback tambahan hingga 20.000 OVO Points.</p>
+      <h3>Keuntungan yang bisa kamu dapatkan:</h3>
+      <ul>
+        <li>Cashback hingga 15.000 OVO Points untuk transaksi pertama.</li>
+        <li>Cashback tambahan 20.000 OVO Points untuk upgrade akun OVO Nabung.</li>
+        <li>Berlaku di seluruh SPBU Pertamina yang menerima pembayaran MyPertamina OVO.</li>
+      </ul>
+      <p>Promo tidak berlaku untuk pengguna MyPertamina OVO yang sudah mendaftarkan promo serupa di merchant lain. Info lengkap lihat <a href="/about/mypertamina-channel">MyPertamina Channel</a>. Syarat dan ketentuan berlaku.</p>
+    `,
+  },
+  {
+    slug: 'pesta-bola-mypertamina',
+    category: 'Program Loyalty',
+    title: 'MyPertamina Pesta Bola: Transaksi Sekarang, Kumpulkan Poinnya, dan Rayakan Euforianya!',
+    description: 'Ayo transaksi, tukar poin, koleksi merchandise spesial, dan nikmati keseruan nobar bersama MyPertamina.',
+    imageUrl: '/images/promo/pesta-bola-mypertamina.jpg',
+    bodyHtml: `
+      <h2>Rayakan Musim Bola Bersama MyPertamina</h2>
+      <p>Setiap transaksi BBM dan non-BBM di aplikasi MyPertamina selama periode promo akan mengumpulkan poin ekstra yang bisa ditukar dengan merchandise spesial edisi Pesta Bola.</p>
+      <ol>
+        <li>Lakukan transaksi minimal Rp100.000,- dalam satu kali transaksi.</li>
+        <li>Poin otomatis terkumpul di akun MyPertamina kamu.</li>
+        <li>Tukarkan poin dengan merchandise atau tiket nobar eksklusif.</li>
+      </ol>
+    `,
+  },
+  {
+    slug: 'perubahan-1-menit',
+    category: 'Feature',
+    title: 'Cukup 1 Menit untuk Perubahan Lebih Baik',
+    description: 'Perbarui data akun MyPertamina kamu hanya dalam waktu 1 menit lewat fitur terbaru di aplikasi.',
+    imageUrl: '/images/promo/perubahan-1-menit.jpg',
+    bodyHtml: `
+      <h2>Update Data Akun Jadi Lebih Cepat</h2>
+      <p>Fitur baru MyPertamina memungkinkan kamu memperbarui data kendaraan dan informasi akun hanya dalam <strong>1 menit</strong>, tanpa perlu datang ke SPBU.</p>
+      <p>Buka aplikasi MyPertamina, masuk ke menu <em>Profil</em>, lalu ikuti langkah-langkah verifikasi singkat untuk memastikan data kamu selalu terkini.</p>
+    `,
+  },
+  {
+    slug: 'grand-podium-event',
+    category: 'Event',
+    title: 'Grand Podium: Raih Hadiah Jutaan Rupiah',
+    description: 'Ikuti rangkaian event Grand Podium MyPertamina dan menangkan hadiah total ratusan juta rupiah.',
+    imageUrl: '/images/promo/grand-podium-event.jpg',
+    bodyHtml: `
+      <h2>Grand Podium MyPertamina 2026</h2>
+      <p>Kumpulkan poin dari setiap transaksi selama periode event untuk mendapatkan kesempatan memenangkan hadiah utama, mulai dari e-voucher hingga kendaraan.</p>
+      <h3>Cara Ikut Serta:</h3>
+      <ul>
+        <li>Daftar melalui aplikasi MyPertamina.</li>
+        <li>Lakukan transaksi BBM minimal 3 kali dalam sebulan.</li>
+        <li>Pantau perolehan poin dan hadiah di halaman leaderboard.</li>
+      </ul>
+    `,
+  },
+  {
+    slug: 'bright-gas-mypergas',
+    category: 'Program Promo',
+    title: 'Beli Bright Gas Pakai MyPertamina, Langsung Dapat Banyak Untung',
+    description: 'Transaksi Bright Gas melalui aplikasi MyPertamina dan dapatkan cashback serta poin loyalitas.',
+    imageUrl: '/images/promo/bright-gas-mypergas.jpg',
+    bodyHtml: `
+      <h2>Untung Berlipat Beli Bright Gas via MyPertamina</h2>
+      <p>Setiap pembelian Bright Gas 5,5 Kg maupun 12 Kg melalui aplikasi MyPertamina akan mendapatkan cashback langsung serta poin loyalitas tambahan.</p>
+      <p>Promo berlaku di seluruh <strong>Bright Store</strong> dan agen resmi yang terdaftar di aplikasi MyPertamina.</p>
+    `,
+  },
+  {
+    slug: 'subsidi-tepat-update',
+    category: 'Subsidi Tepat',
+    title: 'Update Terbaru Kebijakan Subsidi Tepat BBM',
+    description: 'Simak perubahan terbaru mekanisme pendaftaran dan verifikasi Subsidi Tepat BBM.',
+    imageUrl: '/images/promo/subsidi-tepat-update.jpg',
+    bodyHtml: `
+      <h2>Mekanisme Baru Pendaftaran Subsidi Tepat</h2>
+      <p>Pemerintah bersama Pertamina memperbarui alur verifikasi data kendaraan untuk memastikan penyaluran BBM subsidi lebih tepat sasaran.</p>
+      <ol>
+        <li>Daftarkan kendaraan melalui aplikasi MyPertamina atau situs Subsidi Tepat.</li>
+        <li>Lengkapi dokumen STNK dan KTP sesuai domisili.</li>
+        <li>Tunggu proses verifikasi maksimal 3 hari kerja.</li>
+      </ol>
+    `,
+  },
+  {
+    slug: 'fitur-baru-mypertamina',
+    category: 'Updates',
+    title: 'Fitur Baru MyPertamina: Notifikasi Real-Time Transaksi',
+    description: 'Pantau setiap transaksi BBM dan non-BBM secara real-time langsung dari aplikasi MyPertamina.',
+    imageUrl: '/images/promo/fitur-baru-mypertamina.jpg',
+    bodyHtml: `
+      <h2>Notifikasi Real-Time Kini Tersedia</h2>
+      <p>Kamu akan menerima notifikasi otomatis setiap kali transaksi berhasil dilakukan, lengkap dengan rincian jumlah, lokasi SPBU, dan poin yang didapat.</p>
+      <p>Aktifkan notifikasi melalui menu <strong>Pengaturan &gt; Notifikasi</strong> di aplikasi MyPertamina.</p>
+    `,
+  },
+];
+
 const ROLES = [
   { name: 'Super Admin', permissions: PERMISSIONS.map((p) => p[0]) },
   { name: 'Content Editor', permissions: ['price.view', 'content.view', 'content.manage'] },
@@ -352,6 +479,7 @@ async function seed() {
        ON DUPLICATE KEY UPDATE password_hash = VALUES(password_hash), role_id = VALUES(role_id)`,
       ['Super Admin', 'admin@mypertamina.local', passwordHash, superAdminRole.id]
     );
+    const [[adminUser]] = await conn.query('SELECT id FROM users WHERE email = ?', ['admin@mypertamina.local']);
 
     const fuelPrices = [
       ['Pertalite', 10000],
@@ -469,6 +597,47 @@ async function seed() {
           'INSERT INTO product_benefits (product_id, icon, title, description, sort_order) VALUES (?, ?, ?, ?, ?)',
           [productRow.id, benefit.icon, benefit.title, benefit.description, i]
         );
+      }
+    }
+
+    for (const promo of PROMOS) {
+      await conn.query(
+        `INSERT INTO contents (type, category, slug, title, description, body_html, image_url, is_active, created_by)
+         VALUES ('promo', ?, ?, ?, ?, ?, ?, TRUE, ?)
+         ON DUPLICATE KEY UPDATE
+           category = VALUES(category), title = VALUES(title), description = VALUES(description),
+           body_html = VALUES(body_html), image_url = VALUES(image_url)`,
+        [promo.category, promo.slug, promo.title, promo.description, promo.bodyHtml, promo.imageUrl, adminUser.id]
+      );
+    }
+
+    const facilityStats = [
+      ['spklu', 'SPKLU', 17],
+      ['spbklu', 'SPBKLU', 48],
+    ];
+    for (const [statKey, label, value] of facilityStats) {
+      await conn.query(
+        'INSERT INTO facility_stats (stat_key, label, value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE label = VALUES(label), value = VALUES(value)',
+        [statKey, label, value]
+      );
+    }
+
+    const ucollectLocations = [
+      ['SPBU Abdul Muis (31.102.02)', 'Jl. Abdul Muis No.59, RT.4/RW.3, Petojo Sel., Kecamatan Gambir, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10160', 'Jakarta Pusat'],
+      ['SPBU Industri (31.107.01)', 'Jl. Industri Raya, RT.3/RW.2, Gn. Sahari Utara, Kecamatan Sawah Besar, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10720', 'Jakarta Pusat'],
+      ['Kantor Pertamina Regional JBB', 'Jl. Kramat Raya No.59, RT.8/RW.8, Kramat, Kec. Senen, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10450', 'Jakarta Pusat'],
+      ['SPBU MT Haryono (31.128.02)', 'MT Haryono St, RT.11/RW.5, West Tebet, Kota Jakarta Selatan, Jakarta 12810', 'Jakarta Selatan'],
+      ['SPBU Fatmawati 02 (31.124.02)', 'Jl. RS. Fatmawati Raya No.12, RT.4/RW.4, Cipete Sel., Kec. Cilandak, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12410', 'Jakarta Selatan'],
+      ['SPBU Gandaria City (31.121.04)', 'Jl. Gandaria 1 No.25-27 1, RT.1/RW.9, Kramat Pela, Kec. Kby. Baru, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12130', 'Jakarta Selatan'],
+      ['SPBU Lenteng Agung (31.126.01)', 'Jl. Lenteng Agung Raya, RT.7/RW.1, Lenteng Agung, Kec. Jagakarsa, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12610', 'Jakarta Selatan'],
+      ['SPBU Kelapa Gading (34.101.03)', 'Jl. Boulevard Raya, RT.1/RW.2, Kelapa Gading Barat, Kec. Kelapa Gading, Kota Jakarta Utara, Daerah Khusus Ibukota Jakarta 14240', 'Jakarta Utara'],
+      ['SPBU Kemayoran (34.103.05)', 'Jl. Benyamin Sueb, RT.5/RW.3, Kemayoran, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10610', 'Jakarta Pusat'],
+      ['SPBU Cawang (31.129.02)', 'Jl. MT Haryono, RT.2/RW.4, Cawang, Kec. Kramat Jati, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13340', 'Jakarta Timur'],
+    ];
+    for (const [name, address, region] of ucollectLocations) {
+      const [[existing]] = await conn.query('SELECT id FROM ucollect_locations WHERE name = ?', [name]);
+      if (!existing) {
+        await conn.query('INSERT INTO ucollect_locations (name, address, region) VALUES (?, ?, ?)', [name, address, region]);
       }
     }
 
