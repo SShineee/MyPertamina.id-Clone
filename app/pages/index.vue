@@ -13,14 +13,7 @@ const { data: newsRes, pending: newsPending } = await useApi<{ data: any[] }>('/
 
 <template>
   <div>
-    <AppHeader />
-
-    <section class="hero">
-      <div class="container">
-        <h1>Isi Bahan Bakar Lebih Mudah dengan MyPertamina</h1>
-        <p>Pantau harga BBM terbaru, promo, dan informasi terkini dalam satu aplikasi.</p>
-      </div>
-    </section>
+    <HeroSection />
 
     <ContentGrid
       v-if="bannersRes?.data?.length || bannersPending"
@@ -67,20 +60,6 @@ body {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 1.5rem;
-}
-.hero {
-  background: linear-gradient(135deg, #b91c1c, #7f1d1d);
-  color: #fff;
-  padding: 3.5rem 0;
-  text-align: center;
-}
-.hero h1 {
-  margin: 0 0 0.75rem;
-  font-size: 2rem;
-}
-.hero p {
-  margin: 0;
-  opacity: 0.9;
 }
 .section {
   padding: 2.5rem 0;
