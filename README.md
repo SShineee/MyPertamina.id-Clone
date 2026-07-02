@@ -91,20 +91,6 @@ npm install
 npm run dev
 ```
 
----
-
-## 📌 Metodologi Pengembangan
-
-Pengembangan aplikasi menggunakan metode **Agile**, sehingga proses pengerjaan dilakukan secara bertahap (iteratif), dengan evaluasi dan pengembangan fitur secara berkelanjutan.
-
----
-
-## 👨‍💻 Tim Pengembang
-
-Proyek ini dikembangkan sebagai bagian dari tugas mata kuliah Rekayasa Perangkat Lunak.
-
----
-
 ## 📄 Lisensi
 
 Proyek ini dibuat hanya untuk keperluan pembelajaran dan tidak memiliki afiliasi resmi dengan Pertamina maupun aplikasi MyPertamina.
