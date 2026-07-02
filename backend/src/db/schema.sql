@@ -116,8 +116,11 @@ CREATE TABLE IF NOT EXISTS product_benefits (
 CREATE TABLE IF NOT EXISTS contents (
   id INT AUTO_INCREMENT PRIMARY KEY,
   type ENUM('promo', 'banner', 'berita') NOT NULL,
+  category VARCHAR(50) DEFAULT NULL, -- sub-kategori promo, mis. "Event", "Program Loyalty"
+  slug VARCHAR(200) DEFAULT NULL,
   title VARCHAR(200) NOT NULL,
   description TEXT DEFAULT NULL,
+  body_html MEDIUMTEXT DEFAULT NULL, -- konten rich text (HTML) untuk halaman detail
   image_url VARCHAR(500) DEFAULT NULL,
   is_active BOOLEAN NOT NULL DEFAULT TRUE,
   start_date DATE DEFAULT NULL,
@@ -125,5 +128,6 @@ CREATE TABLE IF NOT EXISTS contents (
   created_by INT DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+  FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL,
+  UNIQUE KEY uniq_slug (slug)
 );

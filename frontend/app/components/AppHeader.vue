@@ -28,7 +28,7 @@ const navItems: NavItem[] = [
       ],
     },
   },
-  { key: 'program-promo', label: 'Program & Promo', to: '/program-promo' },
+  { key: 'program-promo', label: 'Program & Promo', to: '/promo-event' },
   {
     key: 'produk',
     label: 'Produk',
