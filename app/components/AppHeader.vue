@@ -235,17 +235,17 @@ onBeforeUnmount(() => {
   font-family: inherit;
 }
 .nav-link:hover {
-  color: #1d4ed8;
+  color: #b91c1c;
 }
 .nav-link.active {
-  color: #1d4ed8;
-  border-color: #1d4ed8;
+  color: #b91c1c;
+  border-color: #b91c1c;
   font-weight: 600;
 }
 .nav-trigger.active {
   color: #fff;
-  background: #1d4ed8;
-  border-color: #1d4ed8;
+  background: #b91c1c;
+  border-color: #b91c1c;
 }
 .chevron {
   transition: transform 0.15s ease;
@@ -280,13 +280,13 @@ onBeforeUnmount(() => {
   justify-content: space-between;
   margin-bottom: 1.75rem;
   padding-bottom: 0.75rem;
-  border-bottom: 3px solid #1d4ed8;
+  border-bottom: 3px solid #b91c1c;
 }
 .dropdown-heading h2 {
   margin: 0;
   font-size: 1.05rem;
   font-weight: 800;
-  color: #1d4ed8;
+  color: #b91c1c;
   letter-spacing: 0.02em;
 }
 .dropdown-close {
@@ -313,6 +313,6 @@ onBeforeUnmount(() => {
   font-weight: 500;
 }
 .dropdown-list a:hover {
-  color: #1d4ed8;
+  color: #b91c1c;
 }
 </style>
