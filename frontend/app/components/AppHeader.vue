@@ -35,10 +35,11 @@ const navItems: NavItem[] = [
     submenu: {
       title: 'Produk',
       items: [
-        { label: 'MyPertamina App', to: '/produk/mypertamina-app' },
-        { label: 'Pertamina Fuel Card', to: '/produk/pertamina-fuel-card' },
-        { label: 'LinkAja', to: '/produk/linkaja' },
-        { label: 'Pertamina Points', to: '/produk/pertamina-points' },
+        { label: 'Pertamax Turbo', to: '/product/gasoline/pertamax-turbo' },
+        { label: 'Pertamax Green 95', to: '/product/gasoline/pertamax-green-95' },
+        { label: 'Pertamax', to: '/product/gasoline/pertamax' },
+        { label: 'Pertamina Dex', to: '/product/diesel/pertamina-dex' },
+        { label: 'Dexlite', to: '/product/diesel/dexlite' },
       ],
     },
   },

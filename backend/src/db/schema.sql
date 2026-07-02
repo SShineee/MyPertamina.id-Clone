@@ -55,6 +55,64 @@ CREATE TABLE IF NOT EXISTS bright_gas_prices (
   FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL
 );
 
+CREATE TABLE IF NOT EXISTS products (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  category VARCHAR(50) NOT NULL, -- e.g. "gasoline", "diesel"
+  slug VARCHAR(100) NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  brand_color VARCHAR(20) NOT NULL DEFAULT '#dc2626',
+  logo_url VARCHAR(500) DEFAULT NULL,
+  hero_background_url VARCHAR(500) DEFAULT NULL,
+  hero_object_url VARCHAR(500) DEFAULT NULL,
+  headline VARCHAR(255) NOT NULL,
+  spec_badge VARCHAR(100) DEFAULT NULL,
+  tagline VARCHAR(150) DEFAULT NULL,
+  tech_title VARCHAR(200) DEFAULT NULL,
+  tech_highlight VARCHAR(100) DEFAULT NULL, -- kata dalam tech_title yang diberi warna aksen
+  tech_image_url VARCHAR(500) DEFAULT NULL,
+  video_url VARCHAR(500) DEFAULT NULL,
+  video_title VARCHAR(200) DEFAULT NULL,
+  ba_photo_url VARCHAR(500) DEFAULT NULL,
+  ba_position VARCHAR(200) DEFAULT NULL,
+  ba_name VARCHAR(100) DEFAULT NULL,
+  ba_quote VARCHAR(500) DEFAULT NULL,
+  benefits_title VARCHAR(200) DEFAULT NULL,
+  benefits_highlight VARCHAR(100) DEFAULT NULL,
+  is_published BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uniq_category_slug (category, slug)
+);
+
+CREATE TABLE IF NOT EXISTS product_tech_features (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  product_id INT NOT NULL,
+  title VARCHAR(150) NOT NULL,
+  title_highlight VARCHAR(100) DEFAULT NULL,
+  description VARCHAR(500) NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS product_tech_badges (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  product_id INT NOT NULL,
+  icon VARCHAR(50) NOT NULL, -- key ikon bawaan frontend, mis. "formula", "octane", "ignition"
+  label VARCHAR(150) NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS product_benefits (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  product_id INT NOT NULL,
+  icon VARCHAR(50) NOT NULL,
+  title VARCHAR(150) NOT NULL,
+  description VARCHAR(500) NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS contents (
   id INT AUTO_INCREMENT PRIMARY KEY,
   type ENUM('promo', 'banner', 'berita') NOT NULL,
