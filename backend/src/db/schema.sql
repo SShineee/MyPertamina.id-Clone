@@ -113,6 +113,25 @@ CREATE TABLE IF NOT EXISTS product_benefits (
   FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS location_directory (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  channel VARCHAR(30) NOT NULL, -- 'spbu-pertamina' | 'ges' | 'pertamax-green-95' | 'lpg' | 'bright-store' | 'bright-cafe'
+  code VARCHAR(50) DEFAULT NULL, -- Kode SPBU (tidak dipakai untuk channel 'lpg')
+  name VARCHAR(150) DEFAULT NULL, -- Nama Outlet/Agen (khusus channel 'lpg')
+  address VARCHAR(255) DEFAULT NULL,
+  city VARCHAR(100) NOT NULL,
+  province VARCHAR(100) NOT NULL,
+  type VARCHAR(20) DEFAULT NULL, -- 'Outlet' | 'Agen' (khusus channel 'lpg')
+  has_spklu BOOLEAN DEFAULT NULL, -- khusus channel 'ges'
+  has_spbklu BOOLEAN DEFAULT NULL, -- khusus channel 'ges'
+  updated_by INT DEFAULT NULL,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL,
+  INDEX idx_channel (channel),
+  INDEX idx_channel_city (channel, city),
+  INDEX idx_channel_province (channel, province)
+);
+
 CREATE TABLE IF NOT EXISTS contents (
   id INT AUTO_INCREMENT PRIMARY KEY,
   type ENUM('promo', 'banner', 'berita') NOT NULL,
