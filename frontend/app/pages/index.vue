@@ -13,6 +13,7 @@ const { data: newsRes, pending: newsPending } = await useApi<{ data: any[] }>('/
 
 <template>
   <div>
+    <AppHeader />
     <HeroSection />
 
     <ContentGrid
