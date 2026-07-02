@@ -89,11 +89,14 @@ const navItems: NavItem[] = [
     key: 'lokasi',
     label: 'Lokasi',
     submenu: {
-      title: 'Lokasi',
+      title: 'SPBU Pertamina',
       items: [
-        { label: 'Cari SPBU Terdekat', to: '/lokasi/spbu' },
-        { label: 'Cari Agen & Pangkalan LPG', to: '/lokasi/agen-lpg' },
-        { label: 'Peta Sebaran Outlet', to: '/lokasi/peta-outlet' },
+        { label: 'SPBU Pertamina', to: '/spbu-location/spbu-pertamina' },
+        { label: 'SPBU Pertamina Green Energy Station (GES)', to: '/spbu-location/ges' },
+        { label: 'Pertamax Green 95', to: '/spbu-location/pertamax-green-95' },
+        { label: 'Bright Store', to: '/spbu-location/bright-store' },
+        { label: 'Bright Cafe', to: '/spbu-location/bright-cafe' },
+        { label: 'Outlet / Agen LPG', to: '/spbu-location/lpg' },
       ],
     },
   },
