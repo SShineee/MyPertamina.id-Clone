@@ -131,3 +131,17 @@ CREATE TABLE IF NOT EXISTS contents (
   FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL,
   UNIQUE KEY uniq_slug (slug)
 );
+
+CREATE TABLE IF NOT EXISTS facility_stats (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  stat_key VARCHAR(50) NOT NULL UNIQUE, -- mis. "spklu", "spbklu"
+  label VARCHAR(150) NOT NULL,
+  value INT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS ucollect_locations (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(150) NOT NULL,
+  address VARCHAR(500) NOT NULL,
+  region VARCHAR(100) NOT NULL
+);
