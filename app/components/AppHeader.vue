@@ -23,7 +23,7 @@ const navItems: NavItem[] = [
       items: [
         { label: 'Informasi Harga BBM', to: '/about/product-price' },
         { label: 'Informasi Harga Bright Gas', to: '/about/bright-gas-price' },
-        { label: 'Keuntungan MyPertamina', to: '/tentang-mypertamina/keuntungan-mypertamina' },
+        { label: 'Keuntungan MyPertamina', to: '/about/keuntungan-mypertamina' },
         { label: 'MyPertamina Channel', to: '/about/mypertamina-channel' },
       ],
     },
