@@ -611,6 +611,33 @@ async function seed() {
       );
     }
 
+    const facilityStats = [
+      ['spklu', 'SPKLU', 17],
+      ['spbklu', 'SPBKLU', 48],
+    ];
+    for (const [statKey, label, value] of facilityStats) {
+      await conn.query(
+        'INSERT INTO facility_stats (stat_key, label, value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE label = VALUES(label), value = VALUES(value)',
+        [statKey, label, value]
+      );
+    }
+
+    const ucollectLocations = [
+      ['SPBU Abdul Muis (31.102.02)', 'Jl. Abdul Muis No.59, RT.4/RW.3, Petojo Sel., Kecamatan Gambir, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10160', 'Jakarta Pusat'],
+      ['SPBU Industri (31.107.01)', 'Jl. Industri Raya, RT.3/RW.2, Gn. Sahari Utara, Kecamatan Sawah Besar, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10720', 'Jakarta Pusat'],
+      ['Kantor Pertamina Regional JBB', 'Jl. Kramat Raya No.59, RT.8/RW.8, Kramat, Kec. Senen, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10450', 'Jakarta Pusat'],
+      ['SPBU MT Haryono (31.128.02)', 'MT Haryono St, RT.11/RW.5, West Tebet, Kota Jakarta Selatan, Jakarta 12810', 'Jakarta Selatan'],
+      ['SPBU Fatmawati 02 (31.124.02)', 'Jl. RS. Fatmawati Raya No.12, RT.4/RW.4, Cipete Sel., Kec. Cilandak, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12410', 'Jakarta Selatan'],
+      ['SPBU Gandaria City (31.121.04)', 'Jl. Gandaria 1 No.25-27 1, RT.1/RW.9, Kramat Pela, Kec. Kby. Baru, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12130', 'Jakarta Selatan'],
+      ['SPBU Lenteng Agung (31.126.01)', 'Jl. Lenteng Agung Raya, RT.7/RW.1, Lenteng Agung, Kec. Jagakarsa, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12610', 'Jakarta Selatan'],
+      ['SPBU Kelapa Gading (34.101.03)', 'Jl. Boulevard Raya, RT.1/RW.2, Kelapa Gading Barat, Kec. Kelapa Gading, Kota Jakarta Utara, Daerah Khusus Ibukota Jakarta 14240', 'Jakarta Utara'],
+      ['SPBU Kemayoran (34.103.05)', 'Jl. Benyamin Sueb, RT.5/RW.3, Kemayoran, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10610', 'Jakarta Pusat'],
+      ['SPBU Cawang (31.129.02)', 'Jl. MT Haryono, RT.2/RW.4, Cawang, Kec. Kramat Jati, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13340', 'Jakarta Timur'],
+    ];
+    for (const [name, address, region] of ucollectLocations) {
+      const [[existing]] = await conn.query('SELECT id FROM ucollect_locations WHERE name = ?', [name]);
+      if (!existing) {
+        await conn.query('INSERT INTO ucollect_locations (name, address, region) VALUES (?, ?, ?)', [name, address, region]);
     const faqs = [
       [
         'Bagaimana jika nomor handphone akun MyPertamina dan E-Wallet saya berbeda (LinkAja, OVO, GoPay)?',

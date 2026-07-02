@@ -4,11 +4,24 @@ interface SubmenuItem {
   to: string
 }
 
+interface SubmenuLink {
+  label: string
+  to?: string
+  href?: string
+  external?: boolean
+}
+
+interface SubmenuGroup {
+  key: string
+  label: string
+  links: SubmenuLink[]
+}
+
 interface NavItem {
   key: string
   label: string
   to?: string
-  submenu?: { title: string; items: SubmenuItem[] }
+  submenu?: { title: string; items?: SubmenuItem[]; groups?: SubmenuGroup[] }
 }
 
 const route = useRoute()
@@ -48,10 +61,27 @@ const navItems: NavItem[] = [
     label: 'Subsidi Tepat',
     submenu: {
       title: 'Subsidi Tepat',
-      items: [
-        { label: 'Subsidi Tepat BBM', to: '/subsidi-tepat/bbm' },
-        { label: 'Subsidi Tepat LPG 3 Kg', to: '/subsidi-tepat/lpg-3kg' },
-        { label: 'Cara Daftar Subsidi Tepat', to: '/subsidi-tepat/cara-daftar' },
+      groups: [
+        {
+          key: 'bbm',
+          label: 'Subsidi Tepat BBM',
+          links: [
+            { label: 'Pendaftaran Subsidi Tepat BBM', href: 'https://subsiditepat.mypertamina.id/', external: true },
+            { label: 'Subsidi Tepat via MyPertamina', to: '/subsidi-tepat/subsidi-tepat-via-mypertamina' },
+            {
+              label: 'FAQ Subsidi Tepat BBM',
+              href: 'https://subsiditepat.mypertamina.id/pertanyaan-umum-subsidi-tepat',
+              external: true,
+            },
+          ],
+        },
+        {
+          key: 'lpg',
+          label: 'Subsidi Tepat LPG 3kg',
+          links: [
+            { label: 'FAQ Subsidi Tepat LPG', href: 'https://subsiditepatlpg.mypertamina.id/infolpg3kg', external: true },
+          ],
+        },
       ],
     },
   },
@@ -73,9 +103,8 @@ const navItems: NavItem[] = [
     submenu: {
       title: 'Sustainability',
       items: [
-        { label: 'Environmental (Lingkungan)', to: '/sustainability/environmental' },
-        { label: 'Social (Sosial)', to: '/sustainability/social' },
-        { label: 'Governance (Tata Kelola)', to: '/sustainability/governance' },
+        { label: 'SPBU Green Energy Station', to: '/sustainability/green-energy-station' },
+        { label: 'Kumpulkan Minyak Jelantah', to: '/sustainability/kumpulkan-minyak-jelantah' },
         { label: 'Laporan Keberlanjutan', to: '/sustainability/laporan' },
       ],
     },
@@ -84,10 +113,12 @@ const navItems: NavItem[] = [
 ]
 
 const openKey = ref<string | null>(null)
+const openGroupKey = ref<string | null>(null)
 const headerEl = ref<HTMLElement | null>(null)
 const panelTop = ref(0)
 
 const currentSubmenu = computed(() => navItems.find((item) => item.key === openKey.value)?.submenu ?? null)
+const activeGroup = computed(() => currentSubmenu.value?.groups?.find((group) => group.key === openGroupKey.value) ?? null)
 
 function isActive(to: string) {
   return route.path === to
@@ -95,10 +126,16 @@ function isActive(to: string) {
 
 function openDropdown(key: string) {
   openKey.value = key
+  openGroupKey.value = null
+}
+
+function openGroup(key: string) {
+  openGroupKey.value = key
 }
 
 function closeDropdown() {
   openKey.value = null
+  openGroupKey.value = null
 }
 
 function updatePanelTop() {
@@ -160,19 +197,62 @@ onBeforeUnmount(() => {
       </nav>
     </div>
 
-    <div v-if="currentSubmenu" class="dropdown-backdrop" :style="{ top: panelTop + 'px' }" @click="closeDropdown" />
+    <template v-if="currentSubmenu">
+      <div class="dropdown-backdrop" :style="{ top: panelTop + 'px' }" @click="closeDropdown" />
 
-    <aside v-if="currentSubmenu" class="dropdown-panel" :style="{ top: panelTop + 'px' }">
-      <div class="dropdown-heading">
-        <h2>{{ currentSubmenu.title.toUpperCase() }}</h2>
-        <button type="button" class="dropdown-close" aria-label="Tutup submenu" @click="closeDropdown">✕</button>
+      <div v-if="currentSubmenu.groups" class="drawer-stack" :style="{ top: panelTop + 'px' }">
+        <aside class="drawer-panel">
+          <div class="dropdown-heading drawer-heading">
+            <h2>{{ currentSubmenu.title.toUpperCase() }}</h2>
+            <button type="button" class="dropdown-close" aria-label="Tutup submenu" @click="closeDropdown">✕</button>
+          </div>
+          <ul class="group-list">
+            <li v-for="group in currentSubmenu.groups" :key="group.key">
+              <button
+                type="button"
+                class="group-item"
+                :class="{ active: openGroupKey === group.key }"
+                @click="openGroup(group.key)"
+              >
+                <span>{{ group.label }}</span>
+                <svg width="8" height="12" viewBox="0 0 8 12" fill="none" aria-hidden="true">
+                  <path d="M1 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </li>
+          </ul>
+        </aside>
+
+        <Transition name="slide-right">
+          <aside v-if="activeGroup" class="drawer-panel">
+            <div class="dropdown-heading drawer-heading">
+              <h2>{{ activeGroup.label.toUpperCase() }}</h2>
+              <button type="button" class="dropdown-close" aria-label="Tutup submenu" @click="closeDropdown">✕</button>
+            </div>
+            <ul class="dropdown-list">
+              <li v-for="link in activeGroup.links" :key="link.label">
+                <a v-if="link.external" :href="link.href" target="_blank" rel="noopener noreferrer" @click="closeDropdown">{{
+                  link.label
+                }}</a>
+                <NuxtLink v-else :to="link.to" @click="closeDropdown">{{ link.label }}</NuxtLink>
+              </li>
+            </ul>
+          </aside>
+        </Transition>
       </div>
-      <ul class="dropdown-list">
-        <li v-for="sub in currentSubmenu.items" :key="sub.to">
-          <NuxtLink :to="sub.to" @click="closeDropdown">{{ sub.label }}</NuxtLink>
-        </li>
-      </ul>
-    </aside>
+
+      <aside v-else class="dropdown-panel" :style="{ top: panelTop + 'px' }">
+        <div class="dropdown-heading">
+          <h2>{{ currentSubmenu.title.toUpperCase() }}</h2>
+          <button type="button" class="dropdown-close" aria-label="Tutup submenu" @click="closeDropdown">✕</button>
+        </div>
+        <ul class="dropdown-list">
+          <li v-for="sub in currentSubmenu.items" :key="sub.to">
+            <NuxtLink :to="sub.to" @click="closeDropdown">{{ sub.label }}</NuxtLink>
+          </li>
+        </ul>
+      </aside>
+    </template>
   </header>
 </template>
 
@@ -315,5 +395,81 @@ onBeforeUnmount(() => {
 }
 .dropdown-list a:hover {
   color: #b91c1c;
+}
+
+.drawer-stack {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 21;
+  display: flex;
+  align-items: stretch;
+}
+.drawer-panel {
+  width: min(320px, 85vw);
+  background: #fff;
+  padding: 2rem 1.75rem;
+  overflow-y: auto;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.12);
+}
+.drawer-heading {
+  border-bottom-color: #1d4ed8;
+}
+.drawer-heading h2 {
+  color: #1d4ed8;
+}
+.group-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.group-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: #f3f4f6;
+  color: #111827;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+.group-item.active {
+  background: #1d4ed8;
+  color: #fff;
+}
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.slide-right-enter-from,
+.slide-right-leave-to {
+  transform: translateX(-12px);
+  opacity: 0;
+}
+
+@media (max-width: 640px) {
+  .drawer-stack {
+    right: 0;
+  }
+  .drawer-panel {
+    width: 100vw;
+  }
+  .drawer-stack .drawer-panel:first-child {
+    position: absolute;
+    inset: 0;
+  }
+  .drawer-stack .drawer-panel:last-child {
+    position: relative;
+  }
 }
 </style>
