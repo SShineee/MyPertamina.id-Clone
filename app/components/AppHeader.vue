@@ -80,7 +80,7 @@ const navItems: NavItem[] = [
       ],
     },
   },
-  { key: 'kontak', label: 'Kontak', to: '/kontak' },
+  { key: 'kontak', label: 'Kontak', to: '/contact' },
 ]
 
 const openKey = ref<string | null>(null)
