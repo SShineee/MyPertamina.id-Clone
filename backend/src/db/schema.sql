@@ -55,6 +55,43 @@ CREATE TABLE IF NOT EXISTS bright_gas_prices (
   FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL
 );
 
+CREATE TABLE IF NOT EXISTS fuel_price_matrix (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  province VARCHAR(100) NOT NULL UNIQUE,
+  is_ftz BOOLEAN NOT NULL DEFAULT FALSE, -- Free Trade Zone (mis. Batam, Bintan, Karimun)
+  pertalite DECIMAL(10, 2) DEFAULT NULL,
+  pertamax DECIMAL(10, 2) DEFAULT NULL,
+  pertamax_turbo DECIMAL(10, 2) DEFAULT NULL,
+  biosolar_subsidi DECIMAL(10, 2) DEFAULT NULL,
+  biosolar_nonsubsidi DECIMAL(10, 2) DEFAULT NULL,
+  pertamax_pertashop DECIMAL(10, 2) DEFAULT NULL, -- NULL = produk tidak dijual di provinsi tersebut
+  updated_by INT DEFAULT NULL,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS benefit_page_content (
+  id INT PRIMARY KEY DEFAULT 1, -- singleton row, selalu id = 1
+  hero_video_id VARCHAR(50) DEFAULT NULL,
+  mascot_video_id VARCHAR(50) DEFAULT NULL,
+  mascot_jiffy_image VARCHAR(500) DEFAULT NULL,
+  mascot_campaign_image VARCHAR(500) DEFAULT NULL,
+  loyalty_image VARCHAR(500) DEFAULT NULL,
+  guide_image VARCHAR(500) DEFAULT NULL,
+  guide_pdf_url VARCHAR(500) DEFAULT NULL,
+  final_illustration VARCHAR(500) DEFAULT NULL,
+  google_play_url VARCHAR(500) DEFAULT NULL,
+  app_store_url VARCHAR(500) DEFAULT NULL,
+  solution_cards JSON DEFAULT NULL,
+  feature_slides JSON DEFAULT NULL,
+  payment_methods JSON DEFAULT NULL,
+  social_links JSON DEFAULT NULL,
+  checklist_features JSON DEFAULT NULL,
+  updated_by INT DEFAULT NULL,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL
+);
+
 CREATE TABLE IF NOT EXISTS contents (
   id INT AUTO_INCREMENT PRIMARY KEY,
   type ENUM('promo', 'banner', 'berita') NOT NULL,
