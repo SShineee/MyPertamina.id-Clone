@@ -31,11 +31,5 @@ const columns = [
     />
 
     <OtherChannelsSection exclude-key="bright-store" />
-
-    <footer class="site-footer">
-      <div class="container">
-        <p>Proyek pembelajaran magang &mdash; tidak berafiliasi resmi dengan Pertamina.</p>
-      </div>
-    </footer>
   </div>
 </template>
