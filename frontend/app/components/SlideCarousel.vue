@@ -2,8 +2,13 @@
 const props = withDefaults(
   defineProps<{
     itemCount: number
+    autoplay?: boolean
+    autoplayInterval?: number
   }>(),
-  {},
+  {
+    autoplay: false,
+    autoplayInterval: 3500,
+  },
 )
 
 const emit = defineEmits<{
@@ -12,6 +17,7 @@ const emit = defineEmits<{
 
 const track = ref<HTMLElement | null>(null)
 const activeIndex = ref(0)
+let autoplayTimer: ReturnType<typeof setInterval> | undefined
 
 watch(activeIndex, (value) => emit('update:activeIndex', value))
 
@@ -47,10 +53,25 @@ function onScroll() {
   })
   activeIndex.value = closest
 }
+
+function startAutoplay() {
+  if (!props.autoplay || props.itemCount <= 1) return
+  stopAutoplay()
+  autoplayTimer = setInterval(() => {
+    scrollToIndex((activeIndex.value + 1) % props.itemCount)
+  }, props.autoplayInterval)
+}
+
+function stopAutoplay() {
+  clearInterval(autoplayTimer)
+}
+
+onMounted(startAutoplay)
+onUnmounted(stopAutoplay)
 </script>
 
 <template>
-  <div class="slide-carousel">
+  <div class="slide-carousel" @mouseenter="stopAutoplay" @mouseleave="startAutoplay">
     <button class="nav-btn nav-prev" type="button" aria-label="Sebelumnya" @click="prev">&#8592;</button>
 
     <div ref="track" class="track" @scroll.passive="onScroll">

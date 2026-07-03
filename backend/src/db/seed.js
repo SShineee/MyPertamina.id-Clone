@@ -600,6 +600,169 @@ async function seed() {
       }
     }
 
+    await conn.query('DELETE FROM location_directory WHERE channel IN (?, ?, ?, ?, ?, ?)', [
+      'spbu-pertamina',
+      'ges',
+      'pertamax-green-95',
+      'lpg',
+      'bright-store',
+      'bright-cafe',
+    ]);
+
+    const spbuPertamina = [
+      ['31.101.01', 'Jl. MH Thamrin No. 1', 'Jakarta Pusat', 'DKI Jakarta'],
+      ['31.101.02', 'Jl. Sudirman No. 45', 'Jakarta Selatan', 'DKI Jakarta'],
+      ['31.101.03', null, 'Jakarta Barat', 'DKI Jakarta'],
+      ['32.201.01', 'Jl. Asia Afrika No. 10', 'Bandung', 'Jawa Barat'],
+      ['32.201.02', 'Jl. Soekarno-Hatta No. 88', 'Bandung', 'Jawa Barat'],
+      ['32.301.01', 'Jl. Pahlawan No. 5', 'Bekasi', 'Jawa Barat'],
+      ['33.101.01', 'Jl. Pandanaran No. 20', 'Semarang', 'Jawa Tengah'],
+      ['33.201.01', null, 'Solo', 'Jawa Tengah'],
+      ['34.101.01', 'Jl. Malioboro No. 3', 'Yogyakarta', 'DI Yogyakarta'],
+      ['35.101.01', 'Jl. Basuki Rahmat No. 12', 'Surabaya', 'Jawa Timur'],
+      ['35.201.01', 'Jl. Ijen No. 7', 'Malang', 'Jawa Timur'],
+      ['36.101.01', 'Jl. Jenderal Sudirman No. 90', 'Tangerang', 'Banten'],
+      ['51.101.01', 'Jl. Sunset Road No. 15', 'Denpasar', 'Bali'],
+      ['12.101.01', 'Jl. Sisingamangaraja No. 8', 'Medan', 'Sumatera Utara'],
+      ['13.101.01', 'Jl. Sudirman No. 25', 'Padang', 'Sumatera Barat'],
+      ['14.101.01', 'Jl. Diponegoro No. 2', 'Pekanbaru', 'Riau'],
+      ['21.101.01', 'Jl. Engku Putri No. 4', 'Batam', 'Kepulauan Riau'],
+      ['16.101.01', 'Jl. Kapten A. Rivai No. 11', 'Palembang', 'Sumatera Selatan'],
+      ['64.101.01', null, 'Balikpapan', 'Kalimantan Timur'],
+      ['64.201.01', 'Jl. Ahmad Yani No. 30', 'Samarinda', 'Kalimantan Timur'],
+      ['73.101.01', 'Jl. Sungai Saddang No. 6', 'Makassar', 'Sulawesi Selatan'],
+      ['91.101.01', 'Jl. Raya Sentani No. 1', 'Jayapura', 'Papua'],
+      ['31.101.04', 'Jl. Kemang Raya No. 55', 'Jakarta Selatan', 'DKI Jakarta'],
+      ['32.201.03', 'Jl. Dago No. 100', 'Bandung', 'Jawa Barat'],
+    ];
+    for (const [code, address, city, province] of spbuPertamina) {
+      await conn.query(
+        `INSERT INTO location_directory (channel, code, address, city, province)
+         VALUES ('spbu-pertamina', ?, ?, ?, ?)`,
+        [code, address, city, province]
+      );
+    }
+
+    const gesStations = [
+      ['31.101.01-GES', 'Jakarta Pusat', 'DKI Jakarta', true, true],
+      ['31.101.02-GES', 'Jakarta Selatan', 'DKI Jakarta', true, false],
+      ['32.201.01-GES', 'Bandung', 'Jawa Barat', true, true],
+      ['33.101.01-GES', 'Semarang', 'Jawa Tengah', false, true],
+      ['34.101.01-GES', 'Yogyakarta', 'DI Yogyakarta', true, false],
+      ['35.101.01-GES', 'Surabaya', 'Jawa Timur', true, true],
+      ['36.101.01-GES', 'Tangerang', 'Banten', true, false],
+      ['51.101.01-GES', 'Denpasar', 'Bali', true, true],
+      ['12.101.01-GES', 'Medan', 'Sumatera Utara', false, true],
+      ['14.101.01-GES', 'Pekanbaru', 'Riau', true, false],
+      ['21.101.01-GES', 'Batam', 'Kepulauan Riau', true, true],
+      ['64.101.01-GES', 'Balikpapan', 'Kalimantan Timur', true, false],
+      ['73.101.01-GES', 'Makassar', 'Sulawesi Selatan', false, true],
+      ['31.101.05-GES', 'Jakarta Timur', 'DKI Jakarta', true, true],
+      ['32.301.01-GES', 'Bekasi', 'Jawa Barat', true, false],
+      ['35.201.01-GES', 'Malang', 'Jawa Timur', false, true],
+    ];
+    for (const [code, city, province, hasSpklu, hasSpbklu] of gesStations) {
+      await conn.query(
+        `INSERT INTO location_directory (channel, code, city, province, has_spklu, has_spbklu)
+         VALUES ('ges', ?, ?, ?, ?, ?)`,
+        [code, city, province, hasSpklu, hasSpbklu]
+      );
+    }
+
+    const pertamaxGreen95 = [
+      ['31.101.01', 'Jl. MH Thamrin No. 1', 'Jakarta Pusat', 'DKI Jakarta'],
+      ['31.101.02', 'Jl. Sudirman No. 45', 'Jakarta Selatan', 'DKI Jakarta'],
+      ['32.201.01', 'Jl. Asia Afrika No. 10', 'Bandung', 'Jawa Barat'],
+      ['33.101.01', 'Jl. Pandanaran No. 20', 'Semarang', 'Jawa Tengah'],
+      ['35.101.01', 'Jl. Basuki Rahmat No. 12', 'Surabaya', 'Jawa Timur'],
+      ['51.101.01', 'Jl. Sunset Road No. 15', 'Denpasar', 'Bali'],
+      ['12.101.01', 'Jl. Sisingamangaraja No. 8', 'Medan', 'Sumatera Utara'],
+      ['14.101.01', 'Jl. Diponegoro No. 2', 'Pekanbaru', 'Riau'],
+      ['64.101.01', null, 'Balikpapan', 'Kalimantan Timur'],
+      ['73.101.01', 'Jl. Sungai Saddang No. 6', 'Makassar', 'Sulawesi Selatan'],
+      ['31.101.06', 'Jl. Cinere Raya No. 9', 'Jakarta Selatan', 'DKI Jakarta'],
+      ['32.201.04', 'Jl. Buah Batu No. 21', 'Bandung', 'Jawa Barat'],
+    ];
+    for (const [code, address, city, province] of pertamaxGreen95) {
+      await conn.query(
+        `INSERT INTO location_directory (channel, code, address, city, province)
+         VALUES ('pertamax-green-95', ?, ?, ?, ?)`,
+        [code, address, city, province]
+      );
+    }
+
+    const lpgOutlets = [
+      ['Bright Gas Outlet Thamrin', 'Outlet', 'Jl. MH Thamrin No. 1', 'Jakarta Pusat', 'DKI Jakarta'],
+      ['Agen Sumber Rezeki', 'Agen', 'Jl. Kemang Raya No. 12', 'Jakarta Selatan', 'DKI Jakarta'],
+      ['Bright Gas Outlet Dago', 'Outlet', 'Jl. Dago No. 100', 'Bandung', 'Jawa Barat'],
+      ['Agen Barokah Gas', 'Agen', null, 'Bandung', 'Jawa Barat'],
+      ['Bright Gas Outlet Pandanaran', 'Outlet', 'Jl. Pandanaran No. 20', 'Semarang', 'Jawa Tengah'],
+      ['Agen Makmur Jaya', 'Agen', 'Jl. Ahmad Yani No. 5', 'Solo', 'Jawa Tengah'],
+      ['Bright Gas Outlet Malioboro', 'Outlet', 'Jl. Malioboro No. 3', 'Yogyakarta', 'DI Yogyakarta'],
+      ['Bright Gas Outlet Basuki Rahmat', 'Outlet', 'Jl. Basuki Rahmat No. 12', 'Surabaya', 'Jawa Timur'],
+      ['Agen Sumber Makmur', 'Agen', 'Jl. Ijen No. 7', 'Malang', 'Jawa Timur'],
+      ['Bright Gas Outlet Sunset Road', 'Outlet', 'Jl. Sunset Road No. 15', 'Denpasar', 'Bali'],
+      ['Agen Rejeki Barokah', 'Agen', 'Jl. Sisingamangaraja No. 8', 'Medan', 'Sumatera Utara'],
+      ['Bright Gas Outlet Diponegoro', 'Outlet', 'Jl. Diponegoro No. 2', 'Pekanbaru', 'Riau'],
+      ['Agen Cahaya Gas', 'Agen', 'Jl. Engku Putri No. 4', 'Batam', 'Kepulauan Riau'],
+      ['Bright Gas Outlet Kapten Rivai', 'Outlet', 'Jl. Kapten A. Rivai No. 11', 'Palembang', 'Sumatera Selatan'],
+      ['Agen Sumber Energi', 'Agen', 'Jl. Ahmad Yani No. 30', 'Samarinda', 'Kalimantan Timur'],
+      ['Bright Gas Outlet Sungai Saddang', 'Outlet', 'Jl. Sungai Saddang No. 6', 'Makassar', 'Sulawesi Selatan'],
+      ['Agen Tunas Jaya', 'Agen', 'Jl. Raya Sentani No. 1', 'Jayapura', 'Papua'],
+      ['Bright Gas Outlet Tangerang City', 'Outlet', 'Jl. Jenderal Sudirman No. 90', 'Tangerang', 'Banten'],
+      ['Agen Berkah Gas', 'Agen', 'Jl. Pahlawan No. 5', 'Bekasi', 'Jawa Barat'],
+      ['Bright Gas Outlet Soekarno-Hatta', 'Outlet', 'Jl. Soekarno-Hatta No. 88', 'Bandung', 'Jawa Barat'],
+    ];
+    for (const [name, type, address, city, province] of lpgOutlets) {
+      await conn.query(
+        `INSERT INTO location_directory (channel, name, type, address, city, province)
+         VALUES ('lpg', ?, ?, ?, ?, ?)`,
+        [name, type, address, city, province]
+      );
+    }
+
+    const brightStoreOutlets = [
+      ['31.101.01', 'Bright Store Thamrin', 'Jl. MH Thamrin No. 1', 'Jakarta Pusat', 'DKI Jakarta'],
+      ['31.101.02', 'Bright Store Sudirman', 'Jl. Sudirman No. 45', 'Jakarta Selatan', 'DKI Jakarta'],
+      ['32.201.01', 'Bright Store Asia Afrika', 'Jl. Asia Afrika No. 10', 'Bandung', 'Jawa Barat'],
+      ['32.201.02', 'Bright Store Soekarno-Hatta', null, 'Bandung', 'Jawa Barat'],
+      ['33.101.01', 'Bright Store Pandanaran', 'Jl. Pandanaran No. 20', 'Semarang', 'Jawa Tengah'],
+      ['34.101.01', 'Bright Store Malioboro', 'Jl. Malioboro No. 3', 'Yogyakarta', 'DI Yogyakarta'],
+      ['35.101.01', 'Bright Store Basuki Rahmat', 'Jl. Basuki Rahmat No. 12', 'Surabaya', 'Jawa Timur'],
+      ['36.101.01', 'Bright Store Tangerang City', 'Jl. Jenderal Sudirman No. 90', 'Tangerang', 'Banten'],
+      ['51.101.01', 'Bright Store Sunset Road', 'Jl. Sunset Road No. 15', 'Denpasar', 'Bali'],
+      ['12.101.01', 'Bright Store Sisingamangaraja', 'Jl. Sisingamangaraja No. 8', 'Medan', 'Sumatera Utara'],
+      ['14.101.01', 'Bright Store Diponegoro', 'Jl. Diponegoro No. 2', 'Pekanbaru', 'Riau'],
+      ['64.101.01', 'Bright Store Balikpapan', null, 'Balikpapan', 'Kalimantan Timur'],
+    ];
+    for (const [code, name, address, city, province] of brightStoreOutlets) {
+      await conn.query(
+        `INSERT INTO location_directory (channel, code, name, address, city, province)
+         VALUES ('bright-store', ?, ?, ?, ?, ?)`,
+        [code, name, address, city, province]
+      );
+    }
+
+    const brightCafeOutlets = [
+      ['Bright Cafe Thamrin', 'Jl. MH Thamrin No. 1', 'Jakarta Pusat', 'DKI Jakarta'],
+      ['Bright Cafe Sudirman', 'Jl. Sudirman No. 45', 'Jakarta Selatan', 'DKI Jakarta'],
+      ['Bright Cafe Asia Afrika', 'Jl. Asia Afrika No. 10', 'Bandung', 'Jawa Barat'],
+      ['Bright Cafe Pandanaran', null, 'Semarang', 'Jawa Tengah'],
+      ['Bright Cafe Malioboro', 'Jl. Malioboro No. 3', 'Yogyakarta', 'DI Yogyakarta'],
+      ['Bright Cafe Basuki Rahmat', 'Jl. Basuki Rahmat No. 12', 'Surabaya', 'Jawa Timur'],
+      ['Bright Cafe Tangerang City', 'Jl. Jenderal Sudirman No. 90', 'Tangerang', 'Banten'],
+      ['Bright Cafe Sunset Road', 'Jl. Sunset Road No. 15', 'Denpasar', 'Bali'],
+      ['Bright Cafe Sisingamangaraja', 'Jl. Sisingamangaraja No. 8', 'Medan', 'Sumatera Utara'],
+      ['Bright Cafe Diponegoro', 'Jl. Diponegoro No. 2', 'Pekanbaru', 'Riau'],
+    ];
+    for (const [name, address, city, province] of brightCafeOutlets) {
+      await conn.query(
+        `INSERT INTO location_directory (channel, name, address, city, province)
+         VALUES ('bright-cafe', ?, ?, ?, ?)`,
+        [name, address, city, province]
+      );
+    }
+
     for (const promo of PROMOS) {
       await conn.query(
         `INSERT INTO contents (type, category, slug, title, description, body_html, image_url, is_active, created_by)
