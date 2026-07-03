@@ -24,12 +24,6 @@ const lastUpdated = '1 Juli 2026'
         <FuelPriceTable :rows="filteredRows" :searching="!!search.trim()" />
       </div>
     </section>
-
-    <footer class="site-footer">
-      <div class="container">
-        <p>Proyek pembelajaran magang &mdash; tidak berafiliasi resmi dengan Pertamina.</p>
-      </div>
-    </footer>
   </div>
 </template>
 

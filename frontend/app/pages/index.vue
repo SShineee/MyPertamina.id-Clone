@@ -39,11 +39,6 @@ const { data: newsRes, pending: newsPending } = await useApi<{ data: any[] }>('/
       <ContentGrid :contents="newsRes?.data ?? []" :pending="newsPending" empty-text="Belum ada berita." />
     </section>
 
-    <footer class="site-footer">
-      <div class="container">
-        <p>Proyek pembelajaran magang &mdash; tidak berafiliasi resmi dengan Pertamina.</p>
-      </div>
-    </footer>
   </div>
 </template>
 
@@ -68,12 +63,5 @@ body {
 .section h2 {
   margin: 0 0 1.25rem;
   font-size: 1.35rem;
-}
-.site-footer {
-  border-top: 1px solid #e5e7eb;
-  padding: 1.5rem 0;
-  color: #6b7280;
-  font-size: 0.85rem;
-  text-align: center;
 }
 </style>
