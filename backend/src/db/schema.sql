@@ -35,14 +35,18 @@ CREATE TABLE IF NOT EXISTS users (
   FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
+DROP TABLE IF EXISTS fuel_prices;
+
 CREATE TABLE IF NOT EXISTS fuel_prices (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  fuel_type VARCHAR(50) NOT NULL UNIQUE, -- e.g. "Pertalite", "Pertamax", "Solar"
+  province VARCHAR(100) NOT NULL,
+  fuel_type VARCHAR(50) NOT NULL, 
   price DECIMAL(10, 2) NOT NULL,
   unit VARCHAR(20) NOT NULL DEFAULT 'liter',
   updated_by INT DEFAULT NULL,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL
+  FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL,
+  UNIQUE KEY uniq_province_fuel (province, fuel_type)
 );
 
 CREATE TABLE IF NOT EXISTS bright_gas_prices (
@@ -163,6 +167,8 @@ CREATE TABLE IF NOT EXISTS ucollect_locations (
   name VARCHAR(150) NOT NULL,
   address VARCHAR(500) NOT NULL,
   region VARCHAR(100) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS faqs (
   id INT AUTO_INCREMENT PRIMARY KEY,
   question VARCHAR(300) NOT NULL,

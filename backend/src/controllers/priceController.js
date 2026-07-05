@@ -1,16 +1,19 @@
 const priceModel = require('../models/priceModel');
 
 async function list(req, res) {
-  const prices = await priceModel.list();
+  const { province } = req.query;
+  const prices = await priceModel.list(province);
   res.json({ data: prices });
 }
 
 async function create(req, res) {
-  const { fuelType, price, unit } = req.body;
-  if (!fuelType || price === undefined) {
-    return res.status(400).json({ message: 'fuelType dan price wajib diisi' });
+  const { province, fuelType, price, unit } = req.body;
+  
+  if (!province || !fuelType || price === undefined) {
+    return res.status(400).json({ message: 'province, fuelType, dan price wajib diisi' });
   }
-  const created = await priceModel.create({ fuelType, price, unit, updatedBy: req.user.id });
+  
+  const created = await priceModel.create({ province, fuelType, price, unit, updatedBy: req.user.id });
   res.status(201).json({ data: created });
 }
 
@@ -19,10 +22,12 @@ async function update(req, res) {
   if (!existing) {
     return res.status(404).json({ message: 'Harga BBM tidak ditemukan' });
   }
+  
   const { price, unit } = req.body;
   if (price === undefined) {
     return res.status(400).json({ message: 'price wajib diisi' });
   }
+  
   const updated = await priceModel.update(req.params.id, { price, unit, updatedBy: req.user.id });
   res.json({ data: updated });
 }

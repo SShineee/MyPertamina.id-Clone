@@ -1,14 +1,30 @@
 <script setup lang="ts">
-import { fuelProductColumns, type ProvinceFuelPrice } from '~/composables/useFuelPriceMatrix'
+import { fuelProductColumns } from '~/composables/useFuelPriceMatrix'
 
+// Tipe data diubah menjadi any[] agar fleksibel menerima data dinamis dari backend
 const props = defineProps<{
-  rows: ProvinceFuelPrice[]
+  rows: any[]
   searching: boolean
 }>()
 
-function formatRupiah(value: number | null) {
+function formatRupiah(value: number | null | undefined) {
   if (value == null) return '-'
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(value)
+}
+
+// Fungsi pembantu untuk mencari harga berdasarkan nama kolom (kebal huruf besar/kecil & beda istilah)
+function getPrice(row: any, colName: string) {
+  let searchKey = colName.toLowerCase()
+  
+  // Penyesuaian jika di UI bernama "Biosolar" tapi di database "Solar"
+  if (searchKey.includes('biosolar')) {
+    searchKey = 'solar'
+  }
+
+  // Cari data di objek row yang namanya cocok
+  const foundKey = Object.keys(row).find(key => key.toLowerCase() === searchKey)
+  
+  return foundKey ? row[foundKey] : null
 }
 </script>
 
@@ -34,13 +50,14 @@ function formatRupiah(value: number | null) {
             {{ row.province }}
             <span v-if="row.ftz" class="ftz-label">FTZ</span>
           </td>
+          
           <td
             v-for="col in fuelProductColumns"
             :key="col.key"
-            :style="{ background: row.prices[col.key] != null ? col.bg : '#f9fafb', color: col.text }"
-            :class="{ 'is-dash': row.prices[col.key] == null }"
+            :style="{ background: getPrice(row, col.name) != null ? col.bg : '#f9fafb', color: col.text }"
+            :class="{ 'is-dash': getPrice(row, col.name) == null }"
           >
-            {{ formatRupiah(row.prices[col.key] ?? null) }}
+            {{ formatRupiah(getPrice(row, col.name)) }}
           </td>
         </tr>
       </tbody>

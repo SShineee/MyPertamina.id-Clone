@@ -17,10 +17,16 @@ async function detail(req, res) {
 }
 
 async function create(req, res) {
-  const { type, category, slug, title, description, bodyHtml, imageUrl, isActive, startDate, endDate } = req.body;
+  let { type, category, slug, title, description, bodyHtml, imageUrl, isActive, startDate, endDate } = req.body;
+  
+  if (req.file) {
+    imageUrl = `/public/uploads/promos/${req.file.filename}`;
+  }
+
   if (!type || !VALID_TYPES.includes(type) || !title) {
     return res.status(400).json({ message: `type (${VALID_TYPES.join('/')}) dan title wajib diisi` });
   }
+  
   const created = await contentModel.create({
     type,
     category,
@@ -42,10 +48,19 @@ async function update(req, res) {
   if (!existing) {
     return res.status(404).json({ message: 'Konten tidak ditemukan' });
   }
-  const { type, category, slug, title, description, bodyHtml, imageUrl, isActive, startDate, endDate } = req.body;
+  
+  let { type, category, slug, title, description, bodyHtml, imageUrl, isActive, startDate, endDate } = req.body;
+  
+  if (req.file) {
+    imageUrl = `/public/uploads/promos/${req.file.filename}`;
+  } else {
+    imageUrl = imageUrl || existing.imageUrl;
+  }
+
   if (!type || !VALID_TYPES.includes(type) || !title) {
     return res.status(400).json({ message: `type (${VALID_TYPES.join('/')}) dan title wajib diisi` });
   }
+  
   const updated = await contentModel.update(req.params.id, {
     type,
     category,
