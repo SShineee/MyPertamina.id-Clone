@@ -1,5 +1,6 @@
 const contentModel = require('../models/contentModel');
 
+// Kembalikan ke tipe struktur utama website
 const VALID_TYPES = ['promo', 'banner', 'berita'];
 
 async function list(req, res) {
@@ -28,16 +29,7 @@ async function create(req, res) {
   }
   
   const created = await contentModel.create({
-    type,
-    category,
-    slug,
-    title,
-    description,
-    bodyHtml,
-    imageUrl,
-    isActive,
-    startDate,
-    endDate,
+    type, category, slug, title, description, bodyHtml, imageUrl, isActive, startDate, endDate,
     createdBy: req.user.id,
   });
   res.status(201).json({ data: created });
@@ -54,24 +46,24 @@ async function update(req, res) {
   if (req.file) {
     imageUrl = `/public/uploads/promos/${req.file.filename}`;
   } else {
-    imageUrl = imageUrl || existing.imageUrl;
+    imageUrl = imageUrl || existing.image_url;
   }
 
-  if (!type || !VALID_TYPES.includes(type) || !title) {
+  if (type && !VALID_TYPES.includes(type)) {
     return res.status(400).json({ message: `type (${VALID_TYPES.join('/')}) dan title wajib diisi` });
   }
   
   const updated = await contentModel.update(req.params.id, {
-    type,
-    category,
-    slug,
-    title,
-    description,
-    bodyHtml,
-    imageUrl,
-    isActive,
-    startDate,
-    endDate,
+    type: type || existing.type,
+    category: category !== undefined ? category : existing.category,
+    slug: slug || existing.slug,
+    title: title || existing.title,
+    description: description !== undefined ? description : existing.description,
+    bodyHtml: bodyHtml || existing.body_html,
+    imageUrl: imageUrl,
+    isActive: isActive !== undefined ? isActive : existing.is_active,
+    startDate: startDate !== undefined ? startDate : existing.start_date,
+    endDate: endDate !== undefined ? endDate : existing.end_date,
   });
   res.json({ data: updated });
 }
