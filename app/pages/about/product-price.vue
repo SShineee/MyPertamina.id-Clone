@@ -4,7 +4,7 @@ import { ref, computed } from 'vue'
 const search = ref('')
 
 // 1. Tarik data dari API Backend
-const { data: apiResponse } = await useFetch<{ data: any[] }>('http://localhost:3001/api/prices')
+const { data: apiResponse } = await useApi<{ data: any[] }>('/prices')
 
 // 2. Olah data mentah menjadi bentuk Matriks (dikelompokkan per provinsi)
 const matrixData = computed(() => {
