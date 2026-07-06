@@ -1,6 +1,3 @@
--- MyPertamina Clone - Database Schema
--- Run this against the database named in DB_NAME (see .env.example)
-
 CREATE TABLE IF NOT EXISTS roles (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(50) NOT NULL UNIQUE,
@@ -136,14 +133,16 @@ CREATE TABLE IF NOT EXISTS location_directory (
   INDEX idx_channel_province (channel, province)
 );
 
+DROP TABLE IF EXISTS contents;
+
 CREATE TABLE IF NOT EXISTS contents (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  type ENUM('promo', 'banner', 'berita') NOT NULL,
-  category VARCHAR(50) DEFAULT NULL, -- sub-kategori promo, mis. "Event", "Program Loyalty"
+  type VARCHAR(50) NOT NULL, 
+  category VARCHAR(50) DEFAULT NULL,
   slug VARCHAR(200) DEFAULT NULL,
   title VARCHAR(200) NOT NULL,
   description TEXT DEFAULT NULL,
-  body_html MEDIUMTEXT DEFAULT NULL, -- konten rich text (HTML) untuk halaman detail
+  body_html MEDIUMTEXT DEFAULT NULL,
   image_url VARCHAR(500) DEFAULT NULL,
   is_active BOOLEAN NOT NULL DEFAULT TRUE,
   start_date DATE DEFAULT NULL,

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, reactive, computed } from 'vue'
+
 const { hasPermission } = useAuth()
 const { data: pricesRes, refresh } = await useApi<{ data: any[] }>('/prices')
 
@@ -7,7 +9,37 @@ const editingId = ref<number | null>(null)
 const form = reactive({ province: '', fuelType: '', price: 0, unit: 'liter' })
 const error = ref('')
 
-// Daftar lengkap provinsi untuk pilihan di form agar seragam
+// State untuk pencarian teks dan filter dropdown
+const searchQuery = ref('')
+const selectedFuelType = ref('') // State baru untuk filter jenis BBM
+
+// Mengambil daftar jenis BBM unik secara otomatis dari data API
+const fuelTypesList = computed(() => {
+  if (!pricesRes.value?.data) return []
+  const types = pricesRes.value.data.map((item: any) => item.fuel_type)
+  return [...new Set(types)].sort() // Menghilangkan duplikat dan mengurutkan sesuai abjad
+})
+
+// Logika filter gabungan (Pencarian Teks + Dropdown Jenis BBM)
+const filteredPrices = computed(() => {
+  if (!pricesRes.value?.data) return []
+
+  return pricesRes.value.data.filter((item: any) => {
+    const query = searchQuery.value.toLowerCase().trim()
+    
+    // Cek kecocokan teks pencarian (provinsi atau nama BBM)
+    const matchSearch = query === '' || 
+      item.province.toLowerCase().includes(query) ||
+      item.fuel_type.toLowerCase().includes(query)
+      
+    // Cek kecocokan opsi dropdown jenis BBM
+    const matchFuelType = selectedFuelType.value === '' || item.fuel_type === selectedFuelType.value
+
+    // Baris akan ditampilkan jika lolos kedua filter (Teks & Dropdown)
+    return matchSearch && matchFuelType
+  })
+})
+
 const provincesList = [
   'Aceh', 'Sumatera Utara', 'Sumatera Barat', 'Riau', 'Kepulauan Riau', 'Jambi',
   'Sumatera Selatan', 'Bengkulu', 'Lampung', 'Kepulauan Bangka Belitung',
@@ -67,7 +99,23 @@ function formatRupiah(value: number) {
   <div>
     <div class="page-header">
       <h1>Harga BBM</h1>
-      <button v-if="hasPermission('price.update')" @click="openCreate">+ Tambah Jenis BBM</button>
+      
+      <div class="header-actions">
+        <select v-model="selectedFuelType" class="filter-select">
+          <option value="">Semua Jenis BBM</option>
+          <option v-for="type in fuelTypesList" :key="type" :value="type">
+            {{ type }}
+          </option>
+        </select>
+
+        <input 
+          v-model="searchQuery" 
+          type="text" 
+          placeholder="Cari provinsi atau BBM..." 
+          class="search-input"
+        />
+        <button v-if="hasPermission('price.update')" @click="openCreate">+ Tambah Jenis BBM</button>
+      </div>
     </div>
 
     <table class="data-table">
@@ -82,7 +130,7 @@ function formatRupiah(value: number) {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in pricesRes?.data ?? []" :key="item.id">
+        <tr v-for="item in filteredPrices" :key="item.id">
           <td>{{ item.province }}</td>
           <td>{{ item.fuel_type }}</td>
           <td>{{ formatRupiah(item.price) }}</td>
@@ -92,6 +140,10 @@ function formatRupiah(value: number) {
             <button class="link" @click="openEdit(item)">Ubah</button>
             <button class="link danger" @click="handleDelete(item.id)">Hapus</button>
           </td>
+        </tr>
+        
+        <tr v-if="filteredPrices.length === 0">
+          <td colspan="6" class="empty-search">Data tidak ditemukan.</td>
         </tr>
       </tbody>
     </table>
@@ -141,6 +193,32 @@ function formatRupiah(value: number) {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+}
+.header-actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  min-width: 250px;
+  font-size: 14px;
+}
+.filter-select {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fff;
+  cursor: pointer;
+}
+.empty-search {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-style: italic;
 }
 .modal select {
   width: 100%;
