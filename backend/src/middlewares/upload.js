@@ -1,9 +1,13 @@
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
+
+const UPLOAD_DIR = path.join(__dirname, '../../public/uploads/promos');
+fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../../public/uploads/promos'));
+    cb(null, UPLOAD_DIR);
   },
   filename: function (req, file, cb) {
     // timestamp-namagambar.ext

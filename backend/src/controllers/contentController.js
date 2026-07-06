@@ -1,4 +1,5 @@
 const contentModel = require('../models/contentModel');
+const { findOrNotFound } = require('../utils/findOrNotFound');
 
 const VALID_TYPES = ['promo', 'banner', 'berita'];
 
@@ -44,13 +45,11 @@ async function create(req, res) {
 }
 
 async function update(req, res) {
-  const existing = await contentModel.findById(req.params.id);
-  if (!existing) {
-    return res.status(404).json({ message: 'Konten tidak ditemukan' });
-  }
-  
+  const existing = await findOrNotFound(contentModel, req.params.id, res, 'Konten tidak ditemukan');
+  if (!existing) return;
+
   let { type, category, slug, title, description, bodyHtml, imageUrl, isActive, startDate, endDate } = req.body;
-  
+
   if (req.file) {
     imageUrl = `/public/uploads/promos/${req.file.filename}`;
   } else {
@@ -77,10 +76,8 @@ async function update(req, res) {
 }
 
 async function remove(req, res) {
-  const existing = await contentModel.findById(req.params.id);
-  if (!existing) {
-    return res.status(404).json({ message: 'Konten tidak ditemukan' });
-  }
+  const existing = await findOrNotFound(contentModel, req.params.id, res, 'Konten tidak ditemukan');
+  if (!existing) return;
   await contentModel.remove(req.params.id);
   res.status(204).send();
 }

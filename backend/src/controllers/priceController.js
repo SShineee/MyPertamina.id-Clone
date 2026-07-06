@@ -1,4 +1,5 @@
 const priceModel = require('../models/priceModel');
+const { findOrNotFound } = require('../utils/findOrNotFound');
 
 async function list(req, res) {
   const { province } = req.query;
@@ -18,11 +19,8 @@ async function create(req, res) {
 }
 
 async function update(req, res) {
-  const existing = await priceModel.findById(req.params.id);
-  if (!existing) {
-    return res.status(404).json({ message: 'Harga BBM tidak ditemukan' });
-  }
-  
+  const existing = await findOrNotFound(priceModel, req.params.id, res, 'Harga BBM tidak ditemukan');
+  if (!existing) return;
   const { price, unit } = req.body;
   if (price === undefined) {
     return res.status(400).json({ message: 'price wajib diisi' });
@@ -33,10 +31,8 @@ async function update(req, res) {
 }
 
 async function remove(req, res) {
-  const existing = await priceModel.findById(req.params.id);
-  if (!existing) {
-    return res.status(404).json({ message: 'Harga BBM tidak ditemukan' });
-  }
+  const existing = await findOrNotFound(priceModel, req.params.id, res, 'Harga BBM tidak ditemukan');
+  if (!existing) return;
   await priceModel.remove(req.params.id);
   res.status(204).send();
 }

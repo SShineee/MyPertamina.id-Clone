@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const userModel = require('../models/userModel');
+const { findOrNotFound } = require('../utils/findOrNotFound');
 
 async function list(req, res) {
   const users = await userModel.list();
@@ -21,10 +22,8 @@ async function create(req, res) {
 }
 
 async function update(req, res) {
-  const existing = await userModel.findById(req.params.id);
-  if (!existing) {
-    return res.status(404).json({ message: 'Pengguna tidak ditemukan' });
-  }
+  const existing = await findOrNotFound(userModel, req.params.id, res, 'Pengguna tidak ditemukan');
+  if (!existing) return;
   const { name, email, roleId, isActive } = req.body;
   if (!name || !email || !roleId) {
     return res.status(400).json({ message: 'name, email, roleId wajib diisi' });
@@ -34,10 +33,8 @@ async function update(req, res) {
 }
 
 async function resetPassword(req, res) {
-  const existing = await userModel.findById(req.params.id);
-  if (!existing) {
-    return res.status(404).json({ message: 'Pengguna tidak ditemukan' });
-  }
+  const existing = await findOrNotFound(userModel, req.params.id, res, 'Pengguna tidak ditemukan');
+  if (!existing) return;
   const { password } = req.body;
   if (!password || password.length < 6) {
     return res.status(400).json({ message: 'Password minimal 6 karakter' });
@@ -48,10 +45,8 @@ async function resetPassword(req, res) {
 }
 
 async function remove(req, res) {
-  const existing = await userModel.findById(req.params.id);
-  if (!existing) {
-    return res.status(404).json({ message: 'Pengguna tidak ditemukan' });
-  }
+  const existing = await findOrNotFound(userModel, req.params.id, res, 'Pengguna tidak ditemukan');
+  if (!existing) return;
   if (existing.id === req.user.id) {
     return res.status(400).json({ message: 'Tidak bisa menghapus akun sendiri' });
   }
