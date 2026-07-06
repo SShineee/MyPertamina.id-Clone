@@ -481,18 +481,34 @@ async function seed() {
     );
     const [[adminUser]] = await conn.query('SELECT id FROM users WHERE email = ?', ['admin@mypertamina.local']);
 
-    const fuelPrices = [
+    const provinces = [
+      'DKI Jakarta', 'Jawa Barat', 'Jawa Tengah', 'DI Yogyakarta', 'Jawa Timur',
+      'Banten', 'Bali', 'Sumatera Utara', 'Sumatera Barat', 'Riau',
+      'Kepulauan Riau', 'Sumatera Selatan', 'Kalimantan Timur', 'Sulawesi Selatan', 'Papua'
+    ];
+
+    const baseFuelPrices = [
       ['Pertalite', 10000],
       ['Pertamax', 12100],
       ['Pertamax Turbo', 13550],
       ['Solar', 6800],
       ['Dexlite', 13400],
     ];
-    for (const [fuelType, price] of fuelPrices) {
-      await conn.query(
-        'INSERT INTO fuel_prices (fuel_type, price) VALUES (?, ?) ON DUPLICATE KEY UPDATE fuel_type = fuel_type',
-        [fuelType, price]
-      );
+
+    for (const prov of provinces) {
+      for (const [fuelType, price] of baseFuelPrices) {
+        let finalPrice = price;
+        if (!['DKI Jakarta', 'Jawa Barat', 'Jawa Tengah', 'DI Yogyakarta', 'Jawa Timur', 'Banten'].includes(prov)) {
+           if (fuelType !== 'Pertalite' && fuelType !== 'Solar') {
+              finalPrice += 300; 
+           }
+        }
+
+        await conn.query(
+          'INSERT INTO fuel_prices (province, fuel_type, price) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE price = VALUES(price)',
+          [prov, fuelType, finalPrice]
+        );
+      }
     }
 
     const brightGasPrices = [
@@ -801,6 +817,9 @@ async function seed() {
       const [[existing]] = await conn.query('SELECT id FROM ucollect_locations WHERE name = ?', [name]);
       if (!existing) {
         await conn.query('INSERT INTO ucollect_locations (name, address, region) VALUES (?, ?, ?)', [name, address, region]);
+      }
+    }
+
     const faqs = [
       [
         'Bagaimana jika nomor handphone akun MyPertamina dan E-Wallet saya berbeda (LinkAja, OVO, GoPay)?',

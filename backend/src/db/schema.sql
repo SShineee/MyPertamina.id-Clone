@@ -1,6 +1,3 @@
--- MyPertamina Clone - Database Schema
--- Run this against the database named in DB_NAME (see .env.example)
-
 CREATE TABLE IF NOT EXISTS roles (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(50) NOT NULL UNIQUE,
@@ -35,14 +32,18 @@ CREATE TABLE IF NOT EXISTS users (
   FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
+DROP TABLE IF EXISTS fuel_prices;
+
 CREATE TABLE IF NOT EXISTS fuel_prices (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  fuel_type VARCHAR(50) NOT NULL UNIQUE, -- e.g. "Pertalite", "Pertamax", "Solar"
+  province VARCHAR(100) NOT NULL,
+  fuel_type VARCHAR(50) NOT NULL, 
   price DECIMAL(10, 2) NOT NULL,
   unit VARCHAR(20) NOT NULL DEFAULT 'liter',
   updated_by INT DEFAULT NULL,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL
+  FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL,
+  UNIQUE KEY uniq_province_fuel (province, fuel_type)
 );
 
 CREATE TABLE IF NOT EXISTS bright_gas_prices (
@@ -132,14 +133,16 @@ CREATE TABLE IF NOT EXISTS location_directory (
   INDEX idx_channel_province (channel, province)
 );
 
+DROP TABLE IF EXISTS contents;
+
 CREATE TABLE IF NOT EXISTS contents (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  type ENUM('promo', 'banner', 'berita') NOT NULL,
-  category VARCHAR(50) DEFAULT NULL, -- sub-kategori promo, mis. "Event", "Program Loyalty"
+  type VARCHAR(50) NOT NULL, 
+  category VARCHAR(50) DEFAULT NULL,
   slug VARCHAR(200) DEFAULT NULL,
   title VARCHAR(200) NOT NULL,
   description TEXT DEFAULT NULL,
-  body_html MEDIUMTEXT DEFAULT NULL, -- konten rich text (HTML) untuk halaman detail
+  body_html MEDIUMTEXT DEFAULT NULL,
   image_url VARCHAR(500) DEFAULT NULL,
   is_active BOOLEAN NOT NULL DEFAULT TRUE,
   start_date DATE DEFAULT NULL,
@@ -163,6 +166,8 @@ CREATE TABLE IF NOT EXISTS ucollect_locations (
   name VARCHAR(150) NOT NULL,
   address VARCHAR(500) NOT NULL,
   region VARCHAR(100) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS faqs (
   id INT AUTO_INCREMENT PRIMARY KEY,
   question VARCHAR(300) NOT NULL,

@@ -1,14 +1,16 @@
 <script setup lang="ts">
+import { ref, reactive } from 'vue'
+
 const { hasPermission } = useAuth()
 const { data: contentsRes, refresh } = await useApi<{ data: any[] }>('/contents')
-
-const TYPE_LABEL: Record<string, string> = { promo: 'Promo', banner: 'Banner', berita: 'Berita' }
 
 const showForm = ref(false)
 const editingId = ref<number | null>(null)
 const error = ref('')
+
+// State khusus untuk form UI (menggabungkan tipe dan kategori)
 const form = reactive({
-  type: 'promo',
+  uiType: 'Program Promo', 
   title: '',
   description: '',
   imageUrl: '',
@@ -18,7 +20,7 @@ const form = reactive({
 })
 
 function resetForm() {
-  form.type = 'promo'
+  form.uiType = 'Program Promo'
   form.title = ''
   form.description = ''
   form.imageUrl = ''
@@ -35,7 +37,8 @@ function openCreate() {
 
 function openEdit(item: any) {
   editingId.value = item.id
-  form.type = item.type
+  // Jika tipenya 'promo', jadikan 'category' sebagai nilai dropdown. Jika bukan, pakai 'type' (banner/berita)
+  form.uiType = item.type === 'promo' ? (item.category || 'Program Promo') : item.type
   form.title = item.title
   form.description = item.description ?? ''
   form.imageUrl = item.image_url ?? ''
@@ -48,10 +51,32 @@ function openEdit(item: any) {
 async function handleSubmit() {
   error.value = ''
   try {
-    if (editingId.value) {
-      await apiFetch(`/contents/${editingId.value}`, { method: 'PUT', body: form })
+    // MAGIC TRICK: Terjemahkan 'uiType' kembali ke format yang diinginkan Database
+    let actualType = 'promo'
+    let actualCategory = ''
+
+    if (['banner', 'berita'].includes(form.uiType)) {
+      actualType = form.uiType
     } else {
-      await apiFetch('/contents', { method: 'POST', body: form })
+      actualCategory = form.uiType
+    }
+
+    // Susun payload yang akan dikirim ke Backend
+    const payload = {
+      type: actualType,
+      category: actualCategory,
+      title: form.title,
+      description: form.description,
+      imageUrl: form.imageUrl,
+      isActive: form.isActive,
+      startDate: form.startDate,
+      endDate: form.endDate
+    }
+
+    if (editingId.value) {
+      await apiFetch(`/contents/${editingId.value}`, { method: 'PUT', body: payload })
+    } else {
+      await apiFetch('/contents', { method: 'POST', body: payload })
     }
     showForm.value = false
     await refresh()
@@ -64,6 +89,13 @@ async function handleDelete(id: number) {
   if (!confirm('Hapus konten ini?')) return
   await apiFetch(`/contents/${id}`, { method: 'DELETE' })
   await refresh()
+}
+
+// Fungsi bantuan untuk menampilkan nama jenis konten di tabel secara elegan
+function getDisplayType(item: any) {
+  if (item.type === 'banner') return 'Banner Beranda'
+  if (item.type === 'berita') return 'Berita'
+  return item.category ? `Promo - ${item.category}` : 'Promo Umum'
 }
 </script>
 
@@ -78,7 +110,7 @@ async function handleDelete(id: number) {
       <thead>
         <tr>
           <th>Judul</th>
-          <th>Tipe</th>
+          <th>Jenis Konten</th>
           <th>Status</th>
           <th>Periode</th>
           <th v-if="hasPermission('content.manage')"></th>
@@ -87,7 +119,7 @@ async function handleDelete(id: number) {
       <tbody>
         <tr v-for="item in contentsRes?.data ?? []" :key="item.id">
           <td>{{ item.title }}</td>
-          <td><span class="badge">{{ TYPE_LABEL[item.type] }}</span></td>
+          <td><span class="badge">{{ getDisplayType(item) }}</span></td>
           <td>{{ item.is_active ? 'Aktif' : 'Nonaktif' }}</td>
           <td>{{ item.start_date?.slice(0, 10) || '-' }} s/d {{ item.end_date?.slice(0, 10) || '-' }}</td>
           <td v-if="hasPermission('content.manage')" class="actions">
@@ -101,38 +133,33 @@ async function handleDelete(id: number) {
     <div v-if="showForm" class="modal-backdrop" @click.self="showForm = false">
       <form class="modal" @submit.prevent="handleSubmit">
         <h2>{{ editingId ? 'Ubah Konten' : 'Tambah Konten' }}</h2>
+        
         <label>
-          Tipe
-          <select v-model="form.type">
-            <option value="promo">Promo</option>
-            <option value="banner">Banner</option>
-            <option value="berita">Berita</option>
+          Jenis Konten
+          <select v-model="form.uiType" required>
+            <!-- Menggunakan optgroup agar dropdown terlihat rapi -->
+            <optgroup label="Program & Promo">
+              <option value="Event">Event</option>
+              <option value="Feature">Feature</option>
+              <option value="Program Loyalty">Program Loyalty</option>
+              <option value="Program Promo">Program Promo</option>
+              <option value="Subsidi Tepat">Subsidi Tepat</option>
+              <option value="Updates">Updates</option>
+            </optgroup>
+            <optgroup label="Lainnya">
+              <option value="banner">Banner Beranda</option>
+              <option value="berita">Berita (Artikel)</option>
+            </optgroup>
           </select>
         </label>
-        <label>
-          Judul
-          <input v-model="form.title" required />
-        </label>
-        <label>
-          Deskripsi
-          <textarea v-model="form.description" rows="3"></textarea>
-        </label>
-        <label>
-          URL Gambar
-          <input v-model="form.imageUrl" type="url" placeholder="https://..." />
-        </label>
-        <label>
-          Tanggal Mulai
-          <input v-model="form.startDate" type="date" />
-        </label>
-        <label>
-          Tanggal Selesai
-          <input v-model="form.endDate" type="date" />
-        </label>
-        <label>
-          <input v-model="form.isActive" type="checkbox" style="width: auto; display: inline-block" />
-          Aktif
-        </label>
+
+        <label>Judul<input v-model="form.title" required /></label>
+        <label>Deskripsi<textarea v-model="form.description" rows="3"></textarea></label>
+        <label>URL Gambar<input v-model="form.imageUrl" type="url" placeholder="https://..." /></label>
+        <label>Tanggal Mulai<input v-model="form.startDate" type="date" /></label>
+        <label>Tanggal Selesai<input v-model="form.endDate" type="date" /></label>
+        <label><input v-model="form.isActive" type="checkbox" style="width: auto; display: inline-block" /> Aktif</label>
+        
         <p v-if="error" class="error">{{ error }}</p>
         <div class="modal-actions">
           <button type="button" class="secondary" @click="showForm = false">Batal</button>
@@ -144,10 +171,6 @@ async function handleDelete(id: number) {
 </template>
 
 <style scoped>
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+optgroup { font-weight: bold; }
 </style>

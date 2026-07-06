@@ -1,4 +1,5 @@
 const faqModel = require('../models/faqModel');
+const { findOrNotFound } = require('../utils/findOrNotFound');
 
 async function list(req, res) {
   const { activeOnly } = req.query;
@@ -16,10 +17,8 @@ async function create(req, res) {
 }
 
 async function update(req, res) {
-  const existing = await faqModel.findById(req.params.id);
-  if (!existing) {
-    return res.status(404).json({ message: 'FAQ tidak ditemukan' });
-  }
+  const existing = await findOrNotFound(faqModel, req.params.id, res, 'FAQ tidak ditemukan');
+  if (!existing) return;
   const { question, answer, sortOrder, isActive } = req.body;
   if (!question || !answer) {
     return res.status(400).json({ message: 'question dan answer wajib diisi' });
@@ -29,10 +28,8 @@ async function update(req, res) {
 }
 
 async function remove(req, res) {
-  const existing = await faqModel.findById(req.params.id);
-  if (!existing) {
-    return res.status(404).json({ message: 'FAQ tidak ditemukan' });
-  }
+  const existing = await findOrNotFound(faqModel, req.params.id, res, 'FAQ tidak ditemukan');
+  if (!existing) return;
   await faqModel.remove(req.params.id);
   res.status(204).send();
 }

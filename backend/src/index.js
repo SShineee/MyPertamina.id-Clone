@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 
 const authRoutes = require('./routes/authRoutes');
@@ -19,6 +20,7 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+app.use('/public', express.static(path.join(__dirname, '../public')));
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
