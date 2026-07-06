@@ -26,7 +26,7 @@ const allCategories: CategoryCard[] = [
     href: 'https://www.pertaminalubricants.com/',
     external: true,
   },
-  { key: 'e-voucher', label: 'E-Voucher MyPertamina', color: '#2563eb', image: null, href: '#' },
+  { key: 'e-voucher', label: 'E-Voucher MyPertamina', color: '#2563eb', image: null, to: '/product/e-voucher' },
 ]
 
 const categories = computed(() => allCategories.filter((category) => category.key !== props.excludeKey))

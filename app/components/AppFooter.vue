@@ -30,7 +30,7 @@ const columns: FooterColumn[] = [
       { label: 'Dexlite', to: '/product/diesel/dexlite' },
       { label: 'Bright Gas', to: '/about/bright-gas-price' },
       { label: 'Pelumas', href: '#' },
-      { label: 'E-Voucher MyPertamina', href: '#' },
+      { label: 'E-Voucher MyPertamina', to: '/product/e-voucher' },
     ],
   },
 ]
