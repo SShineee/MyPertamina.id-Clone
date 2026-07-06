@@ -58,7 +58,7 @@ const navItems: NavItem[] = [
         { label: 'Dexlite', to: '/product/diesel/dexlite' },
         { label: 'Bright Gas', to: '/product/lpg/bright-gas' },
         { label: 'Lubricants', href: 'https://www.pertaminalubricants.com/', external: true },
-        { label: 'E-Voucher MyPertamina', href: '#' },
+        { label: 'E-Voucher MyPertamina', to: '/product/e-voucher' },
       ],
     },
   },
