@@ -30,7 +30,7 @@ const columns: FooterColumn[] = [
       { label: 'Dexlite', to: '/product/diesel/dexlite' },
       { label: 'Bright Gas', to: '/about/bright-gas-price' },
       { label: 'Pelumas', href: '#' },
-      { label: 'E-Voucher MyPertamina', href: '#' },
+      { label: 'E-Voucher MyPertamina', to: '/product/e-voucher' },
     ],
   },
 ]
@@ -43,6 +43,7 @@ const socials = [
 ]
 
 const year = new Date().getFullYear()
+const logoFailed = ref(false)
 </script>
 
 <template>
@@ -50,8 +51,17 @@ const year = new Date().getFullYear()
     <div class="container footer-top">
       <div class="footer-brand">
         <NuxtLink to="/" class="logo" aria-label="MyPertamina">
-          <span class="logo-mark">My</span>
-          <span class="logo-word">PERTAMINA</span>
+          <img
+            v-if="!logoFailed"
+            src="/images/branding/mypertamina-logo.png"
+            alt="MyPertamina"
+            class="logo-image"
+            @error="logoFailed = true"
+          />
+          <template v-else>
+            <span class="logo-mark">My</span>
+            <span class="logo-word">PERTAMINA</span>
+          </template>
         </NuxtLink>
 
         <p class="tagline">
@@ -154,8 +164,13 @@ const year = new Date().getFullYear()
   text-decoration: none;
   width: fit-content;
 }
+.logo-image {
+  height: 36px;
+  width: auto;
+  display: block;
+}
 .logo-mark {
-  background: linear-gradient(135deg, #ef4444, #1d4ed8);
+  background: #b91c1c;
   color: #fff;
   font-weight: 700;
   font-size: 0.9rem;
@@ -166,7 +181,7 @@ const year = new Date().getFullYear()
 .logo-word {
   font-weight: 800;
   font-size: 1.05rem;
-  color: #1e3a8a;
+  color: #1d4ed8;
   letter-spacing: 0.02em;
 }
 .tagline {

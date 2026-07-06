@@ -1,7 +1,9 @@
 <script setup lang="ts">
 interface SubmenuItem {
   label: string
-  to: string
+  to?: string
+  href?: string
+  external?: boolean
 }
 
 interface SubmenuLink {
@@ -25,6 +27,7 @@ interface NavItem {
 }
 
 const route = useRoute()
+const logoFailed = ref(false)
 
 const navItems: NavItem[] = [
   { key: 'beranda', label: 'Beranda', to: '/' },
@@ -53,6 +56,9 @@ const navItems: NavItem[] = [
         { label: 'Pertamax', to: '/product/gasoline/pertamax' },
         { label: 'Pertamina Dex', to: '/product/diesel/pertamina-dex' },
         { label: 'Dexlite', to: '/product/diesel/dexlite' },
+        { label: 'Bright Gas', to: '/product/lpg/bright-gas' },
+        { label: 'Lubricants', href: 'https://www.pertaminalubricants.com/', external: true },
+        { label: 'E-Voucher MyPertamina', to: '/product/e-voucher' },
       ],
     },
   },
@@ -132,6 +138,14 @@ function openDropdown(key: string) {
   openGroupKey.value = null
 }
 
+function toggleDropdown(key: string) {
+  if (openKey.value === key) {
+    closeDropdown()
+  } else {
+    openDropdown(key)
+  }
+}
+
 function openGroup(key: string) {
   openGroupKey.value = key
 }
@@ -157,10 +171,19 @@ onBeforeUnmount(() => {
 
 <template>
   <header ref="headerEl" class="site-header">
-    <div class="container header-inner">
+    <div class="header-inner">
       <NuxtLink to="/" class="logo" aria-label="MyPertamina">
-        <span class="logo-mark">My</span>
-        <span class="logo-word">PERTAMINA</span>
+        <img
+          v-if="!logoFailed"
+          src="/images/branding/mypertamina-logo.png"
+          alt="MyPertamina"
+          class="logo-image"
+          @error="logoFailed = true"
+        />
+        <template v-else>
+          <span class="logo-mark">My</span>
+          <span class="logo-word">PERTAMINA</span>
+        </template>
       </NuxtLink>
 
       <nav class="nav" aria-label="Menu utama">
@@ -180,8 +203,7 @@ onBeforeUnmount(() => {
             :class="{ active: openKey === item.key }"
             aria-haspopup="true"
             :aria-expanded="openKey === item.key"
-            @click="openDropdown(item.key)"
-            @mouseenter="openDropdown(item.key)"
+            @click="toggleDropdown(item.key)"
           >
             {{ item.label }}
             <svg
@@ -250,8 +272,15 @@ onBeforeUnmount(() => {
           <button type="button" class="dropdown-close" aria-label="Tutup submenu" @click="closeDropdown">✕</button>
         </div>
         <ul class="dropdown-list">
-          <li v-for="sub in currentSubmenu.items" :key="sub.to">
-            <NuxtLink :to="sub.to" @click="closeDropdown">{{ sub.label }}</NuxtLink>
+          <li v-for="sub in currentSubmenu.items" :key="sub.label">
+            <a
+              v-if="sub.href"
+              :href="sub.href"
+              v-bind="sub.external ? { target: '_blank', rel: 'noopener noreferrer' } : {}"
+              @click="closeDropdown"
+              >{{ sub.label }}</a
+            >
+            <NuxtLink v-else :to="sub.to!" @click="closeDropdown">{{ sub.label }}</NuxtLink>
           </li>
         </ul>
       </aside>
@@ -268,9 +297,12 @@ onBeforeUnmount(() => {
   z-index: 10;
 }
 .header-inner {
+  max-width: 1440px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: nowrap;
   gap: 1.5rem;
   padding: 0.85rem 1.5rem;
 }
@@ -281,8 +313,13 @@ onBeforeUnmount(() => {
   text-decoration: none;
   flex-shrink: 0;
 }
+.logo-image {
+  height: 32px;
+  width: auto;
+  display: block;
+}
 .logo-mark {
-  background: linear-gradient(135deg, #ef4444, #1d4ed8);
+  background: #b91c1c;
   color: #fff;
   font-weight: 700;
   font-size: 0.9rem;
@@ -293,14 +330,19 @@ onBeforeUnmount(() => {
 .logo-word {
   font-weight: 800;
   font-size: 1.05rem;
-  color: #1e3a8a;
+  color: #1d4ed8;
   letter-spacing: 0.02em;
 }
 .nav {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.25rem;
+  flex-wrap: nowrap;
+  gap: 0.15rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar {
+  display: none;
 }
 .nav-link {
   display: inline-flex;
@@ -310,7 +352,7 @@ onBeforeUnmount(() => {
   text-decoration: none;
   font-weight: 500;
   font-size: 0.9rem;
-  padding: 0.45rem 0.75rem;
+  padding: 0.45rem 0.65rem;
   border-radius: 999px;
   border: 1px solid transparent;
   white-space: nowrap;
@@ -320,6 +362,8 @@ onBeforeUnmount(() => {
 }
 .nav-link:hover {
   color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fecaca;
 }
 .nav-link.active {
   color: #b91c1c;
@@ -327,6 +371,11 @@ onBeforeUnmount(() => {
   font-weight: 600;
 }
 .nav-trigger.active {
+  color: #fff;
+  background: #b91c1c;
+  border-color: #b91c1c;
+}
+.nav-trigger.active:hover {
   color: #fff;
   background: #b91c1c;
   border-color: #b91c1c;
@@ -388,16 +437,21 @@ onBeforeUnmount(() => {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0.5rem;
 }
 .dropdown-list a {
+  display: block;
   color: #111827;
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 500;
+  padding: 0.85rem 1rem;
+  border-radius: 0.65rem;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 .dropdown-list a:hover {
   color: #b91c1c;
+  background: #f3f4f6;
 }
 
 .drawer-stack {
