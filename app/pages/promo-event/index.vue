@@ -17,8 +17,16 @@ const appliedSearch = ref('')
 
 const queryParams = computed(() => {
   const params: Record<string, string> = { type: 'promo', activeOnly: 'true' }
-  if (selectedCategory.value !== 'Semua') params.category = selectedCategory.value
-  if (appliedSearch.value) params.search = appliedSearch.value
+  
+  // Gunakan category untuk filter spesifik sesuai tab yang diklik
+  if (selectedCategory.value !== 'Semua') {
+    params.category = selectedCategory.value
+  }
+  
+  if (appliedSearch.value) {
+    params.search = appliedSearch.value
+  }
+  
   return params
 })
 
