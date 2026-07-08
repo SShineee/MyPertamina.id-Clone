@@ -13,6 +13,9 @@ const sustainabilityRoutes = require('./routes/sustainabilityRoutes');
 const faqRoutes = require('./routes/faqRoutes');
 const userRoutes = require('./routes/userRoutes');
 const roleRoutes = require('./routes/roleRoutes');
+const appAuthRoutes = require('./routes/appAuthRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
+const userDataRoutes = require('./routes/userDataRoutes');
 const { notFoundHandler, errorHandler } = require('./middlewares/errorHandler');
 
 const app = express();
@@ -36,6 +39,11 @@ app.use('/api/sustainability', sustainabilityRoutes);
 app.use('/api/faqs', faqRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
+
+// MyPertamina App Service Mock integration — proxied only, no shared DB.
+app.use('/api/app/auth', appAuthRoutes);
+app.use('/api/app', dashboardRoutes);
+app.use('/api/app', userDataRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
