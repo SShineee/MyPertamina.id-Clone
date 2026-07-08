@@ -28,6 +28,17 @@ interface NavItem {
 
 const route = useRoute()
 const logoFailed = ref(false)
+const { user, isLoggedIn, logout } = useAuth()
+
+const userInitials = computed(() => {
+  const n = user.value?.name?.trim() || 'U'
+  return n.split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase() ?? '').join('')
+})
+
+function onLogout() {
+  logout()
+  navigateTo('/')
+}
 
 const navItems: NavItem[] = [
   { key: 'beranda', label: 'Beranda', to: '/' },
@@ -220,6 +231,17 @@ onBeforeUnmount(() => {
           </button>
         </template>
       </nav>
+
+      <div class="header-actions">
+        <template v-if="isLoggedIn">
+          <NuxtLink to="/dashboard" class="user-name" :title="user?.name || 'Akun'">
+            <span class="user-avatar">{{ userInitials }}</span>
+            <span class="user-name-text">{{ user?.name || 'Akun' }}</span>
+          </NuxtLink>
+          <button type="button" class="logout-button" @click="onLogout">Logout</button>
+        </template>
+        <NuxtLink v-else to="/login" class="login-button">Login</NuxtLink>
+      </div>
     </div>
 
     <template v-if="currentSubmenu">
@@ -340,9 +362,83 @@ onBeforeUnmount(() => {
   gap: 0.15rem;
   overflow-x: auto;
   scrollbar-width: none;
+  margin-right: auto;
 }
 .nav::-webkit-scrollbar {
   display: none;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+.user-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #374151;
+  white-space: nowrap;
+  text-decoration: none;
+  padding: 0.3rem 0.3rem 0.3rem 0.3rem;
+  border-radius: 999px;
+}
+.user-name:hover {
+  color: #1d4ed8;
+}
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #1d4ed8;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.user-name-text {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.logout-button {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #b91c1c;
+  background: none;
+  border: 1px solid #fecaca;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.logout-button:hover {
+  background: #fef2f2;
+}
+.login-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #fff;
+  background: #b91c1c;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid #b91c1c;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.login-button:hover {
+  background: #991b1b;
+  border-color: #991b1b;
 }
 .nav-link {
   display: inline-flex;
